@@ -13,12 +13,14 @@ public class Engine implements Constants, ActionListener {
 	
 	private Table table;
 	private PlayerTurn playerTurn;
+	private PlayerTurnThread playerTurnThread;
 	public ArrayList<Integer> deckNumbers_1 = new ArrayList<>();	// колода 1 игрока в цифрах
 	public ArrayList<Integer> deckNumbers_2 = new ArrayList<>();	// колода 2 игрока в цифрах
+	public String[] cardsOnTable_left = new String[10];
+	public String[] cardsOnTable_right = new String[10];
 	
 	public Engine(Table table) {
 		this.table = table;
-		playerTurn = new PlayerTurn(table);
 	}
 	
 	public void actionPerformed(ActionEvent e) {
@@ -31,49 +33,66 @@ public class Engine implements Constants, ActionListener {
 	 * 
 	 */
 	public void newGame(){
+		playerTurnThread = new PlayerTurnThread(this, table);
+		playerTurn = playerTurnThread.getPlayerTurn();
 		
+		Component componentToRemove;
 		//============= Очистить поле =============
-		table.cardsJPanels.clear();
 		for (int i = 1; i <= 9; i++) {
-			int x = CARD_XY_LEFT.get(i*10+1);
+			int x = CARD_XY_LEFT.get(i*10+1)+10;
 			int y = CARD_XY_LEFT.get(i*10+2);
-				Component compToRemove = table.mainPanel.findComponentAt(x,y);
-				table.mainPanel.remove(compToRemove);
+				componentToRemove = table.findComponentToRemove(x, y);
+				table.removeComponent(componentToRemove);
 		}
-		table.mainPanel.repaint();
+		for (int i = 1; i <= 9; i++) {
+			int x = CARD_XY_RIGHT.get(i*10+1)+10;
+			int y = CARD_XY_RIGHT.get(i*10+2);
+				componentToRemove = table.findComponentToRemove(x, y);
+				table.removeComponent(componentToRemove);
+		}
+		playerTurn.setCardIsSelected(false);
+
+		//============= Очистка отслеживания наличия карт на полях =============
+		for (int i = 1; i <= 9; i++) {
+			cardsOnTable_left[i] = " ";
+			cardsOnTable_right[i] = " ";
+		}
 		
-		table.leftTEST.setText(""); 		// УДАЛИТЬ
-		table.rightTEST.setText("");		// УДАЛИТЬ
-		
+		table.setTextOnLabel(table.leftTEST, ""); 		// УДАЛИТЬ
+		table.setTextOnLabel(table.rightTEST, "");		// УДАЛИТЬ
 
 		//============= Генерация колод игроков =============
-		deckNumbers_1 = RandomizeDecks(N_OF_CARDS, table.leftTEST);	// замешивание колоды 1 игрока из N_OF_CARDS карт
-		deckNumbers_2 = RandomizeDecks(N_OF_CARDS, table.rightTEST);	// замешивание колоды 2 игрока из N_OF_CARDS карт
-
-		startGame();
+		deckNumbers_1 = RandomizeDecks(table.leftTEST);	// замешивание колоды 1 игрока из N_OF_CARDS карт
+		deckNumbers_2 = RandomizeDecks(table.rightTEST);	// замешивание колоды 2 игрока из N_OF_CARDS карт
+		
+		playerTurnThread.start();
 	}
 	
-	private ArrayList<Integer> RandomizeDecks(int n_of_cards, JLabel label){
+	private ArrayList<Integer> RandomizeDecks(JLabel jlabel){
 		ArrayList<Integer> generatedNumbers = new ArrayList<>();
 		Random rnd = new Random();
 		int x;
-			for (int i=1; i<=n_of_cards; i++){
-				x = rnd.nextInt(n_of_cards)+1;
+			for (int i=1; i<=N_OF_CARDS; i++){
+				x = rnd.nextInt(N_OF_CARDS)+1;
 				if (!generatedNumbers.contains(x))
 					generatedNumbers.add(x);
 				else
 					i--;
 			}
-		for (int i: generatedNumbers){ 				// УДАЛИТЬ
-			label.setText(label.getText()+" "+i);
-		}
+			for (int i: generatedNumbers){ 				// УДАЛИТЬ
+				table.setTextOnLabel(jlabel, table.getTextOnLabel(jlabel)+" "+i);
+			}
 		return generatedNumbers;
 	}
 	
-	private void startGame(){
-		//while (true){
-			playerTurn.Turn("left", deckNumbers_1);
-			playerTurn.Turn("right", deckNumbers_2);
-		//}
-	}	
+	public ArrayList<Integer> getDeckNumber_1(){
+		return deckNumbers_1;
+	}
+	public ArrayList<Integer> getDeckNumber_2(){
+		return deckNumbers_2;
+	}
+	
+	public PlayerTurnThread getPlayerTurnThread(){
+		return playerTurnThread;
+	}
 }
