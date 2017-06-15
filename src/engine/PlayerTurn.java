@@ -4,22 +4,28 @@ import java.awt.Component;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JPanel;
+
+import TESTS.Tests;
 import screen.Table;
 
-public class PlayerTurn implements Constants{
+public class PlayerTurn implements Constants, CardsValues{
 
 	private Table table;
 	private Engine engine;
 	private String side;
+	private Tests tests;
 	private HashMap<Integer, Integer> card_xy;
 	private int actionsDone;
-	private int focusedCard_N=1;
+	private int focusedCard_N;
 	private boolean cardIsSelected = false;
-	private String[] cardsOnTable;
+	private String[] cardsOnTable_POWER;
+	private int cardsToBeDrawn;
+	private String selectedCardType;
 	
 	public PlayerTurn(Engine engine, Table table){
 		this.table = table;
 		this.engine = engine;
+		tests = table.getTests();
 	}
 	
 	public void Turn(String playerSide, ArrayList<Integer> deckNumbers){
@@ -28,10 +34,11 @@ public class PlayerTurn implements Constants{
 		int i;
 		int x;
 		int y;
-		int cardsToBeDrawn;
 		int positionToStartDrawCard = deckNumbers.size()-1;
-		cardsOnTable = side.equals("left")? engine.cardsOnTable_left : engine.cardsOnTable_right;
+		cardsOnTable_POWER = side.equals("left")? engine.getCardsOnTable_POWER_left() : 
+												engine.getCardsOnTable_POWER_right();
 		focusedCard_N = 1;
+		tests.setTextOnLabel(tests.getFocusedCardTEST(), "focusedCard_N="+focusedCard_N);
 		actionsDone = 0;
 
 		card_xy = side.equals("left")? CARD_XY_LEFT : CARD_XY_RIGHT;
@@ -46,11 +53,12 @@ public class PlayerTurn implements Constants{
 			cardPanel = new ImageImport(Integer.toString(deckNumbers.get(positionToStartDrawCard-i+1)));
 			cardPanel.setBounds(x, y, CARD_WIDTH, CARD_HEIGHT);
 			cardPanel.setOpaque(false);		
-			table.mainPanel.add(cardPanel);
-			cardsOnTable[i] = "y";
+			table.addCardPanelToMainPanel(cardPanel);
+			cardsOnTable_POWER[i] = POWER.get(deckNumbers.get(positionToStartDrawCard-i+1));
 		}
+		tests.fillInCardsOnTablePOWERLabel();
 		setFocusOnCard();
-		table.mainPanel.repaint();
+		table.getMainPanel().repaint();
 		
 		//============= Удаление из конца колоды cardsToBeDrawn шт. карт =============
 		for (i=0; i<cardsToBeDrawn; i++)
@@ -64,16 +72,16 @@ public class PlayerTurn implements Constants{
 		int x = card_xy.get(focusedCard_N*10+1);
 		int y = card_xy.get(focusedCard_N*10+2);
 		int dX = side.equals("left")? 10: -10;
-			Component selectedCard = table.mainPanel.findComponentAt(x+10, y);
-			if (selectedCard != table.mainPanel)
+			Component selectedCard = table.findComponentOnMainPanel(x+10, y);
+			if (selectedCard != table.getMainPanel())
 				selectedCard.setLocation(selectedCard.getX()-dX, selectedCard.getY());
 	}
 	public void setFocusOnCard(){
 		int x = card_xy.get(focusedCard_N*10+1);
 		int y = card_xy.get(focusedCard_N*10+2);
 		int dX = side.equals("left")? 10: -10;
-			Component selectedCard = table.mainPanel.findComponentAt(x+10, y);
-			if (selectedCard != table.mainPanel)
+			Component selectedCard = table.findComponentOnMainPanel(x+10, y);
+			if (selectedCard != table.getMainPanel())
 				selectedCard.setLocation(selectedCard.getX()+dX, selectedCard.getY());
 	}
 	
@@ -83,35 +91,44 @@ public class PlayerTurn implements Constants{
 	public void setSelectOnCard(){
 		int x = card_xy.get(focusedCard_N*10+1);
 		int y = card_xy.get(focusedCard_N*10+2);
-			Component selectedCard = table.mainPanel.findComponentAt(x+10, y);
-			if (selectedCard != table.mainPanel){
-				selectedCard.setLocation(selectedCard.getX(), selectedCard.getY()-10);
+			Component selectedCardPanel = table.findComponentOnMainPanel(x+10, y);
+			if (selectedCardPanel != table.getMainPanel()){
+				selectedCardPanel.setLocation(selectedCardPanel.getX(), selectedCardPanel.getY()-10);
 				cardIsSelected = true;
+				selectedCardType = cardsOnTable_POWER[focusedCard_N];
+				cardsOnTable_POWER[focusedCard_N] = "n";
+				tests.fillInCardsOnTablePOWERLabel();
 			}
 	}
 	public void setUnselectOnCard(){
 		int x = card_xy.get(focusedCard_N*10+1);
 		int y = card_xy.get(focusedCard_N*10+2);
-			Component selectedCard = table.mainPanel.findComponentAt(x+10, y);
-			if (selectedCard != table.mainPanel){
-				selectedCard.setLocation(selectedCard.getX(), selectedCard.getY()+10);
+			Component selectedCardPanel = table.findComponentOnMainPanel(x+10, y);
+			if (selectedCardPanel != table.getMainPanel()){
+				selectedCardPanel.setLocation(selectedCardPanel.getX(), selectedCardPanel.getY()+10);
 				cardIsSelected = false;
+				cardsOnTable_POWER[focusedCard_N] = selectedCardType;
+				tests.fillInCardsOnTablePOWERLabel();
 			}
 	}
 	
 	public void cardToMaana(){
 		int x = card_xy.get(focusedCard_N*10+1);
 		int y = card_xy.get(focusedCard_N*10+2);
-			Component selectedCard = table.mainPanel.findComponentAt(x+10, y);
-			table.mainPanel.remove(selectedCard);
+			Component selectedCard = table.findComponentOnMainPanel(x+10, y);
+			table.getMainPanel().remove(selectedCard);
 			actionsDone++;
 			cardIsSelected = false;
-			cardsOnTable[focusedCard_N] = "n";
+			cardsOnTable_POWER[focusedCard_N] = "n";
+			tests.fillInCardsOnTablePOWERLabel();
 	}
 	
-	public String[] getCardsOnTable(){
-		return cardsOnTable;
-	}
+	public void setCardsOnTable(int i, String str){
+		cardsOnTable_POWER[i] = str;
+	}	
+		public String[] getCardsOnTable_POWER(){
+			return cardsOnTable_POWER;
+		}
 	
 	public void setEngine(Engine engine){
 		this.engine = engine;
@@ -135,11 +152,25 @@ public class PlayerTurn implements Constants{
 			return focusedCard_N;
 		}
 		
-	public int getActionsDone(){
-		return actionsDone;
+	public void setActionsDone(int actionsDone){
+		this.actionsDone = actionsDone;
+	}	
+		public int getActionsDone(){
+			return actionsDone;
+		}
+	
+	public int getCardsToBeDrawn(){
+		return cardsToBeDrawn;
 	}
 	
 	public HashMap<Integer, Integer> getCard_XY (){
 		return card_xy;
 	}
+	
+	public void setSelectedCardType(String selectedCardType){
+		this.selectedCardType = selectedCardType;
+	}
+		public String getSelectedCardType(){
+			return selectedCardType;
+		}
 }

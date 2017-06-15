@@ -35,7 +35,7 @@ public interface CardsValues {
 	public HashMap<Integer, String> POWER = new HashMap<Integer, String>(){
 		private static final long serialVersionUID = 1L;
 		{
-			put(1, "r"); put(2, "h"); put(3, " "); put(4, "a"); put(15, " ");
-			put(6, "s"); put(7, " "); put(8, "r"); put(9, "a"); put(10, "m");				
+			put(1, "r"); put(2, "h"); put(3, "y"); put(4, "a"); put(15, "y");
+			put(6, "s"); put(7, "y"); put(8, "r"); put(9, "a"); put(10, "m");				
 				}};
 }

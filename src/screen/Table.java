@@ -7,8 +7,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import TESTS.Tests;
 import engine.Constants;
 import engine.Engine;
 import engine.ImageImport;
@@ -19,15 +19,14 @@ public class Table implements Constants, KeyListener {
 	private Engine engine;
 	private MoveSelectedCards msc;
 	private PlayerTurn playerTurn;
-	public JFrame mainFrame = new JFrame("Game of Cards");
-	public JPanel mainPanel = new PanelMainTable();
-	public JPanel leftDeckCard = new PanelDecks(); 	// левая колода
-	public JPanel rightDeckCard = new PanelDecks();	// правая колода
-	public JPanel leftHpSign = new ImageImport("Heart");
-	public JButton newGameButton = new JButton("Новая игра");  
-	
-	public JLabel leftTEST = new JLabel("");
-	public JLabel rightTEST = new JLabel("");
+	private Tests tests = new Tests(this);
+	private JFrame mainFrame = new JFrame("Game of Cards");
+	private JPanel mainPanel = new PanelMainTable();
+	private JPanel leftDeckCard = new PanelDecks(); 	// левая колода
+	private JPanel rightDeckCard = new PanelDecks();	// правая колода
+	private JPanel leftHpSign = new ImageImport("Heart");
+	private JButton newGameButton = new JButton("Новая игра");
+	private int focusedCard_N;
 	
 	Table(){
 		engine = new Engine(this);
@@ -36,11 +35,8 @@ public class Table implements Constants, KeyListener {
 		
 		mainPanel.setLayout(null);
 		mainPanel.setBackground(Color.WHITE);
-		leftTEST.setBounds(50, 500, 100, 20);								// УДАЛИТЬ
-		rightTEST.setBounds(DISPLAY_RESOLUTION_X-50-100, 500, 100, 20);		// УДАЛИТЬ
-		mainPanel.add(leftTEST);
-		mainPanel.add(rightTEST);
 
+		tests.setUpComponents();
 		leftDeckCard.setBounds(X_LEFT_DECK, DECK_Y, DECK_WIDTH, DECK_HEIGTH);
 		rightDeckCard.setBounds(X_RIGHT_DECK, DECK_Y, DECK_WIDTH, DECK_HEIGTH);
 		newGameButton.setBounds(MIDDLE_X-50, 0, 100, 50);
@@ -62,22 +58,27 @@ public class Table implements Constants, KeyListener {
 	public void keyReleased(KeyEvent e) {}
 	public void keyTyped(KeyEvent e) {}
 	public void keyPressed(KeyEvent e) {
-		playerTurn = engine.getPlayerTurnThread().getPlayerTurn();
+		
+		try {
+			playerTurn = engine.getPlayerTurnThread().getPlayerTurn();
+			focusedCard_N = playerTurn.getFocusedCard_N();
+			
+			char c = e.getKeyChar();
+			
+			if (playerTurn.getSide().equals("right") && (c=='a'|c=='A'|c=='ф'|c=='Ф'))
+				c='d';
+			else
+				if (playerTurn.getSide().equals("right") && (c=='d'|c=='D'|c=='в'|c=='В'))
+					c='a';
+			if (playerTurn.getCardIsSelected())
+				keyPressedWithSelectedCard(c);
+			else
+				keyPressedWithUnselectedCard(c);
+		} catch (NullPointerException e1) {}
+	
 		if (e.getKeyChar()==27)
 			System.exit(0);
-		char c = e.getKeyChar();
 		
-		if (playerTurn.getSide().equals("right") && (c=='a'|c=='A'|c=='ф'|c=='Ф'))
-			c='d';
-		else
-			if (playerTurn.getSide().equals("right") && (c=='d'|c=='D'|c=='в'|c=='В'))
-				c='a';
-		
-		if (playerTurn.getCardIsSelected())
-			keyPressedWithSelectedCard(c);
-		else
-			keyPressedWithUnselectedCard(c);
-	
 	mainPanel.repaint();
 	}
 	
@@ -88,21 +89,26 @@ public class Table implements Constants, KeyListener {
 			case 'ы':
 			case 'Ы':
 				{
-					//moveSelectedCard("down");
+					if (focusedCard_N >= 4)
+						msc.moveCard("down");
+					tests.setTextOnLabel(tests.getFocusedCardTEST(), "focusedCard_N="+playerTurn.getFocusedCard_N());
 				} break;
 			case 'w':
 			case 'W':
 			case 'ц':
 			case 'Ц':
 				{
-					//moveSelectedCard("up");
+					if (focusedCard_N >= 4)
+						msc.moveCard("up");
+					tests.setTextOnLabel(tests.getFocusedCardTEST(), "focusedCard_N="+playerTurn.getFocusedCard_N());
 				} break;
 			case 'd':
 			case 'D':
 			case 'в':
 			case 'В':
 				{
-					//moveSelectedCard("right");
+						msc.moveCard("right");
+						tests.setTextOnLabel(tests.getFocusedCardTEST(), "focusedCard_N="+playerTurn.getFocusedCard_N());
 				} break;
 			case 'a':
 			case 'A':
@@ -110,11 +116,11 @@ public class Table implements Constants, KeyListener {
 			case 'Ф':
 				{
 					msc.moveCard("left");
+					tests.setTextOnLabel(tests.getFocusedCardTEST(), "focusedCard_N="+playerTurn.getFocusedCard_N());
 				} break;
 			case ' ':
 			{
-				if (playerTurn.getFocusedCard_N() <= 3)
-						playerTurn.setUnselectOnCard();
+					msc.moveCard(" ");
 			} break;
 		}
 	}
@@ -125,7 +131,7 @@ public class Table implements Constants, KeyListener {
 	 * @param e
 	 */
 	private void keyPressedWithUnselectedCard (char c){
-		String[] cardsOnTable = playerTurn.getCardsOnTable();
+		String[] cardsOnTable_POWER = playerTurn.getCardsOnTable_POWER();
 		playerTurn.setUnfocusOnCard();
 		switch (c) {
 			case 's':
@@ -134,11 +140,13 @@ public class Table implements Constants, KeyListener {
 			case 'Ы':
 				{
 					for (int i = 1; i <= 2; i++) {
-						if (playerTurn.getFocusedCard_N() + i == 4) break;
-						if (cardsOnTable[playerTurn.getFocusedCard_N() + i] == "n") continue;
-						if (cardsOnTable[playerTurn.getFocusedCard_N() + i] == "y")
+						if (focusedCard_N + i == 4) break;
+						if (cardsOnTable_POWER[focusedCard_N + i].equals("n")) continue;
+						if (!cardsOnTable_POWER[focusedCard_N + i].equals("n"))
 							{
-								playerTurn.setFocusedCard_N(playerTurn.getFocusedCard_N() + i);
+								playerTurn.setFocusedCard_N(focusedCard_N + i);
+								tests.setTextOnLabel(tests.getFocusedCardTEST(), "focusedCard_N="+playerTurn.getFocusedCard_N());
+								break;
 							}
 					}					
 				} break;
@@ -148,11 +156,12 @@ public class Table implements Constants, KeyListener {
 			case 'Ц':
 				{
 					for (int i = 1; i <= 2; i++) {
-						if (playerTurn.getFocusedCard_N() - i == 0) break;
-						if (cardsOnTable[playerTurn.getFocusedCard_N() - i] == "n") continue;
-						if (cardsOnTable[playerTurn.getFocusedCard_N() - i] == "y")
+						if (focusedCard_N - i == 0) break;
+						if (cardsOnTable_POWER[focusedCard_N - i].equals("n")) continue;
+						if (!cardsOnTable_POWER[focusedCard_N - i].equals("n"))
 							{
-								playerTurn.setFocusedCard_N(playerTurn.getFocusedCard_N() - i);
+								playerTurn.setFocusedCard_N(focusedCard_N - i);
+								tests.setTextOnLabel(tests.getFocusedCardTEST(), "focusedCard_N="+playerTurn.getFocusedCard_N());
 								break;
 							}
 					}					
@@ -165,7 +174,7 @@ public class Table implements Constants, KeyListener {
 		playerTurn.setFocusOnCard();
 	}
 	
-	public Component findComponentToRemove(int x, int y){
+	public Component findComponentOnMainPanel(int x, int y){
 			Component componentToRemove = mainPanel.findComponentAt(x,y);
 		return componentToRemove;
 	}
@@ -174,17 +183,35 @@ public class Table implements Constants, KeyListener {
 		mainPanel.remove(componentToRemove);
 	}
 	
-	public void setTextOnLabel(JLabel jlabel, String str){
-		jlabel.setText(str);
+	public void addCardPanelToMainPanel(JPanel cardPanel){
+		mainPanel.add(cardPanel);
 	}
-		public String getTextOnLabel(JLabel jlabel){
-			return jlabel.getText();		
+	
+	public JPanel getMainPanel(){
+		return mainPanel;
 	}
-		
+	
+	public void moveCardOnTable(int old_x, int old_y, int new_x, int new_y){
+		int dX = playerTurn.getSide().equals("left")? 10 : -10;
+		mainPanel.findComponentAt(old_x+10, old_y).setLocation(new_x+dX, new_y-10);
+	}
+	
+	public JButton getNewGameButton(){
+		return newGameButton;
+	}
+	
+	public Tests getTests(){
+		return tests;
+	}
+	
+	public Engine getEngine(){
+		return engine;
+	}
+	
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		Table table = new Table();
-	}	
+	}
 }
 
 
