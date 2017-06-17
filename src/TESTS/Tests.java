@@ -17,11 +17,11 @@ public class Tests implements Constants{
 		this.table = table;
 	}
 	
-	public void setUpComponents(){
+	public void setUpTESTSComponents(){
 		leftCardsLabel.setBounds(50, 500, 100, 20);								
 		rightCardsLabel.setBounds(DISPLAY_RESOLUTION_X-50-100, 500, 100, 20);		
 		focusedCardLabel.setBounds(50, 50, 200, 20);
-		cardsOnTablePOWERLabel.setBounds(50, 80, 200, 20);
+		cardsOnTablePOWERLabel.setBounds(300, 50, 200, 20);
 		
 		table.getMainPanel().add(leftCardsLabel);
 		table.getMainPanel().add(rightCardsLabel);
@@ -46,10 +46,6 @@ public class Tests implements Constants{
 	public JLabel getFocusedCardTEST(){
 		return focusedCardLabel;
 	}	
-	/*
-	public JLabel getCardsOnTablePOWERLabel(){
-		return cardsOnTablePOWERLabel;
-	}*/
 	
 	public void fillInCardsOnTablePOWERLabel(){
 		playerTurn = table.getEngine().getPlayerTurnThread().getPlayerTurn();

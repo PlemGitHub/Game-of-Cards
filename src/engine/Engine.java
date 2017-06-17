@@ -17,10 +17,12 @@ public class Engine implements Constants, ActionListener {
 	private PlayerTurn playerTurn;
 	private Tests tests;
 	private PlayerTurnThread playerTurnThread;
-	public ArrayList<Integer> deckInNumbers_left = new ArrayList<>();	// колода 1 игрока в цифрах
-	public ArrayList<Integer> deckInNumbers_right = new ArrayList<>();	// колода 2 игрока в цифрах
-	public String[] cardsOnTable_POWER_left = new String[13];
-	public String[] cardsOnTable_POWER_right = new String[13];
+	private ArrayList<Integer> deckInNumbers_left = new ArrayList<>();	// колода 1 игрока в цифрах
+	private ArrayList<Integer> deckInNumbers_right = new ArrayList<>();	// колода 2 игрока в цифрах
+	private String[] cardsOnTable_POWER_left = new String[13];
+	private String[] cardsOnTable_POWER_right = new String[13];
+	private int hp_left;
+	private int hp_right;
 	
 	public Engine(Table table) {
 		this.table = table;
@@ -45,13 +47,13 @@ public class Engine implements Constants, ActionListener {
 			int x = CARD_XY_LEFT.get(i*10+1)+10;
 			int y = CARD_XY_LEFT.get(i*10+2);
 				componentToRemove = table.findComponentOnMainPanel(x, y);
-				table.removeComponent(componentToRemove);
+				table.removeComponentFromTable(componentToRemove);
 		}
 		for (int i = 1; i <= 9; i++) {
 			int x = CARD_XY_RIGHT.get(i*10+1)+10;
 			int y = CARD_XY_RIGHT.get(i*10+2);
 				componentToRemove = table.findComponentOnMainPanel(x, y);
-				table.removeComponent(componentToRemove);
+				table.removeComponentFromTable(componentToRemove);
 		}
 		playerTurn.setCardIsSelected(false);
 
@@ -59,7 +61,10 @@ public class Engine implements Constants, ActionListener {
 		for (int i = 1; i <= 9; i++) {
 			cardsOnTable_POWER_left[i] = "n";
 			cardsOnTable_POWER_right[i] = "n";
-		}	
+		}
+		
+		table.setTextOnLabel(table.getHpSign_Label_left(), Integer.toString(START_HP));
+		table.setTextOnLabel(table.getHpSign_Label_right(), Integer.toString(START_HP));
 
 		//============= Генерация колод игроков =============
 		deckInNumbers_left = RandomizeDecks(tests.getLeftTEST());	// замешивание колоды 1 игрока из N_OF_CARDS карт
@@ -102,5 +107,12 @@ public class Engine implements Constants, ActionListener {
 	
 	public PlayerTurnThread getPlayerTurnThread(){
 		return playerTurnThread;
+	}
+	
+	public int getHp_left(){
+		return hp_left;
+	}
+	public int getHp_right(){
+		return hp_right;
 	}
 }

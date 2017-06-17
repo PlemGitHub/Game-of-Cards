@@ -27,7 +27,7 @@ public class PlayerTurnThread extends Thread implements Constants{
 			Thread.yield();
 		
 		playerTurn.Turn("right", engine.getDeckInNumbers_right());
-		while (playerTurn.getActionsDone() != 3)
+		while (playerTurn.getActionsDone() != playerTurn.getCardsToBeDrawn())
 			Thread.yield();
 	}
 	

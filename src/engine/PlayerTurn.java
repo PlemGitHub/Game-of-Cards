@@ -20,7 +20,8 @@ public class PlayerTurn implements Constants, CardsValues{
 	private boolean cardIsSelected = false;
 	private String[] cardsOnTable_POWER;
 	private int cardsToBeDrawn;
-	private String selectedCardType;
+	private String startCardPOWER;
+	private int hp;
 	
 	public PlayerTurn(Engine engine, Table table){
 		this.table = table;
@@ -35,13 +36,14 @@ public class PlayerTurn implements Constants, CardsValues{
 		int x;
 		int y;
 		int positionToStartDrawCard = deckNumbers.size()-1;
+		card_xy = side.equals("left")? CARD_XY_LEFT : CARD_XY_RIGHT;
+		hp = side.equals("left")? engine.getHp_left() : engine.getHp_right();
 		cardsOnTable_POWER = side.equals("left")? engine.getCardsOnTable_POWER_left() : 
 												engine.getCardsOnTable_POWER_right();
-		focusedCard_N = 1;
 		tests.setTextOnLabel(tests.getFocusedCardTEST(), "focusedCard_N="+focusedCard_N);
+		focusedCard_N = 1;
 		actionsDone = 0;
 
-		card_xy = side.equals("left")? CARD_XY_LEFT : CARD_XY_RIGHT;
 		
 		//============= ѕроверка на остаток количества карт =============
 		cardsToBeDrawn = deckNumbers.size()>3? 3 : deckNumbers.size();
@@ -95,9 +97,9 @@ public class PlayerTurn implements Constants, CardsValues{
 			if (selectedCardPanel != table.getMainPanel()){
 				selectedCardPanel.setLocation(selectedCardPanel.getX(), selectedCardPanel.getY()-10);
 				cardIsSelected = true;
-				selectedCardType = cardsOnTable_POWER[focusedCard_N];
-				cardsOnTable_POWER[focusedCard_N] = "n";
-				tests.fillInCardsOnTablePOWERLabel();
+				startCardPOWER = cardsOnTable_POWER[focusedCard_N];
+				//cardsOnTable_POWER[focusedCard_N] = "n";
+				//tests.fillInCardsOnTablePOWERLabel();
 			}
 	}
 	public void setUnselectOnCard(){
@@ -107,8 +109,8 @@ public class PlayerTurn implements Constants, CardsValues{
 			if (selectedCardPanel != table.getMainPanel()){
 				selectedCardPanel.setLocation(selectedCardPanel.getX(), selectedCardPanel.getY()+10);
 				cardIsSelected = false;
-				cardsOnTable_POWER[focusedCard_N] = selectedCardType;
-				tests.fillInCardsOnTablePOWERLabel();
+				//cardsOnTable_POWER[focusedCard_N] = startCardPOWER;
+				//tests.fillInCardsOnTablePOWERLabel();
 			}
 	}
 	
@@ -167,10 +169,10 @@ public class PlayerTurn implements Constants, CardsValues{
 		return card_xy;
 	}
 	
-	public void setSelectedCardType(String selectedCardType){
-		this.selectedCardType = selectedCardType;
+	public void setStartCardPOWER(String selectedCardType){
+		this.startCardPOWER = selectedCardType;
 	}
-		public String getSelectedCardType(){
-			return selectedCardType;
+		public String getStartCardPOWER(){
+			return startCardPOWER;
 		}
 }
