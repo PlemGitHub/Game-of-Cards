@@ -82,7 +82,7 @@ public class MoveSelectedCards implements Constants {
 			} break;
 			
 			case "right":{
-				if (playerTurn.getFocusedCard_N() <= 3){
+				if (playerTurn.getFocusedCard_N() <= 3 && playerTurn.getCardsOnTable_COST()[playerTurn.getFocusedCard_N()] <= playerTurn.getMaana()){
 					startFocusedCard_N = playerTurn.getFocusedCard_N();
 					findNewSpaceOnTable();
 				}
@@ -106,6 +106,7 @@ public class MoveSelectedCards implements Constants {
 					playerTurn.setUnselectOnCard();				
 					playerTurn.setUnfocusOnCard();
 					playerTurn.setActionsDone(playerTurn.getActionsDone()+1);
+					playerTurn.decreaseMaanaForCard();
 					setFocusAfterAction();
 				}
 			} break;
@@ -125,8 +126,8 @@ public class MoveSelectedCards implements Constants {
 											card_xy.get((checkPos-3)*10+2),
 												card_xy.get(checkPos*10+1),
 													card_xy.get(checkPos*10+2));
-					playerTurn.setCardsOnTable(checkPos, playerTurn.getCardsOnTable_POWER()[checkPos-3]);
-					playerTurn.setCardsOnTable(checkPos-3, "n");
+					playerTurn.setCardsOnTable_POWER(checkPos, playerTurn.getCardsOnTable_POWER()[checkPos-3]);
+					playerTurn.setCardsOnTable_POWER(checkPos-3, "n");
 					tests.fillInCardsOnTablePOWERLabel();
 				}
 		}
@@ -143,8 +144,8 @@ public class MoveSelectedCards implements Constants {
 										card_xy.get(focusedCard_N_ToSwitch_old*10+2),
 											card_xy.get(focusedCard_N_ToSwitch_new*10+1),
 												card_xy.get(focusedCard_N_ToSwitch_new*10+2));
-				playerTurn.setCardsOnTable(focusedCard_N_ToSwitch_new, powerOnNewPosition);
-				playerTurn.setCardsOnTable(focusedCard_N_ToSwitch_old, "n");
+				playerTurn.setCardsOnTable_POWER(focusedCard_N_ToSwitch_new, powerOnNewPosition);
+				playerTurn.setCardsOnTable_POWER(focusedCard_N_ToSwitch_old, "n");
 				tests.fillInCardsOnTablePOWERLabel();
 				changeFocusedCardAndMoveSelectedCardOnTable(focusedCardToCheck);
 				return true;
@@ -171,9 +172,9 @@ public class MoveSelectedCards implements Constants {
 	
 	public void changeFocusedCardAndMoveSelectedCardOnTable(int newFocusedCard){
 			int dX = playerTurn.getSide().equals("left")? 10:-10;
-			playerTurn.setCardsOnTable(playerTurn.getFocusedCard_N(), "n");
+			playerTurn.setCardsOnTable_POWER(playerTurn.getFocusedCard_N(), "n");
 			playerTurn.setFocusedCard_N(newFocusedCard);
-			playerTurn.setCardsOnTable(newFocusedCard, playerTurn.getStartCardPOWER());
+			playerTurn.setCardsOnTable_POWER(newFocusedCard, playerTurn.getStartCardPOWER());
 			tests.fillInCardsOnTablePOWERLabel();
 			new_x = card_xy.get(playerTurn.getFocusedCard_N()*10+1)+dX;
 			new_y = card_xy.get(playerTurn.getFocusedCard_N()*10+2)-10;

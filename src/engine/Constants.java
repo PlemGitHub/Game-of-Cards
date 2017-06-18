@@ -4,7 +4,7 @@ import java.awt.Toolkit;
 import java.util.HashMap;
 
 public interface Constants {
-	public int N_OF_CARDS = 3;
+	public int N_OF_CARDS = 9;
 	public int START_HP = 20;
 	public int START_MAANA = 0;
 	public int dA = 5; //коэффициент для скругления углов обводки

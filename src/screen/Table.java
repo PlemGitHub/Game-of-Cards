@@ -7,7 +7,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import TESTS.Tests;
 import engine.Constants;
@@ -82,7 +81,7 @@ public class Table implements Constants, KeyListener {
 				{
 					if (focusedCard_N >= 4)
 						msc.moveCard("down");
-					tests.setTextOnLabel(tests.getFocusedCardTEST(), "focusedCard_N="+playerTurn.getFocusedCard_N());
+					tests.getFocusedCardTEST().setText("focusedCard_N="+playerTurn.getFocusedCard_N());
 				} break;
 			case 'w':
 			case 'W':
@@ -91,7 +90,7 @@ public class Table implements Constants, KeyListener {
 				{
 					if (focusedCard_N >= 4)
 						msc.moveCard("up");
-					tests.setTextOnLabel(tests.getFocusedCardTEST(), "focusedCard_N="+playerTurn.getFocusedCard_N());
+					tests.getFocusedCardTEST().setText("focusedCard_N="+playerTurn.getFocusedCard_N());
 				} break;
 			case 'd':
 			case 'D':
@@ -99,7 +98,7 @@ public class Table implements Constants, KeyListener {
 			case 'Â':
 				{
 						msc.moveCard("right");
-						tests.setTextOnLabel(tests.getFocusedCardTEST(), "focusedCard_N="+playerTurn.getFocusedCard_N());
+						tests.getFocusedCardTEST().setText("focusedCard_N="+playerTurn.getFocusedCard_N());
 				} break;
 			case 'a':
 			case 'A':
@@ -107,7 +106,7 @@ public class Table implements Constants, KeyListener {
 			case 'Ô':
 				{
 					msc.moveCard("left");
-					tests.setTextOnLabel(tests.getFocusedCardTEST(), "focusedCard_N="+playerTurn.getFocusedCard_N());
+					tests.getFocusedCardTEST().setText("focusedCard_N="+playerTurn.getFocusedCard_N());
 				} break;
 			case ' ':
 			{
@@ -136,7 +135,7 @@ public class Table implements Constants, KeyListener {
 						if (!cardsOnTable_POWER[focusedCard_N + i].equals("n"))
 							{
 								playerTurn.setFocusedCard_N(focusedCard_N + i);
-								tests.setTextOnLabel(tests.getFocusedCardTEST(), "focusedCard_N="+playerTurn.getFocusedCard_N());
+								tests.getFocusedCardTEST().setText("focusedCard_N="+playerTurn.getFocusedCard_N());
 								break;
 							}
 					}					
@@ -152,7 +151,7 @@ public class Table implements Constants, KeyListener {
 						if (!cardsOnTable_POWER[focusedCard_N - i].equals("n"))
 							{
 								playerTurn.setFocusedCard_N(focusedCard_N - i);
-								tests.setTextOnLabel(tests.getFocusedCardTEST(), "focusedCard_N="+playerTurn.getFocusedCard_N());
+								tests.getFocusedCardTEST().setText("focusedCard_N="+playerTurn.getFocusedCard_N());
 								break;
 							}
 					}					
@@ -198,15 +197,6 @@ public class Table implements Constants, KeyListener {
 			public InterfaceElements getInterfaceElements(){
 				return iel;
 			}
-	
-	
-	public void setTextOnLabel(JLabel jlabel, String str){
-		jlabel.setText(str);
-	}
-		public String getTextOnLabel(JLabel jlabel){
-			return jlabel.getText();		
-	}
-		
 	
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {

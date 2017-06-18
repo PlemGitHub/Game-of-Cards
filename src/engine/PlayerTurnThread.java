@@ -14,21 +14,18 @@ public class PlayerTurnThread extends Thread implements Constants{
 	
 	@Override
 	public void run() {
-		playerTurn.Turn("left", engine.getDeckInNumbers_left());
-		while (playerTurn.getActionsDone() != playerTurn.getCardsToBeDrawn())
-			Thread.yield();
-		
-		playerTurn.Turn("right", engine.getDeckInNumbers_right());
-		while (playerTurn.getActionsDone() != playerTurn.getCardsToBeDrawn())
-			Thread.yield();
-		
-		playerTurn.Turn("left", engine.getDeckInNumbers_left());
-		while (playerTurn.getActionsDone() != playerTurn.getCardsToBeDrawn())
-			Thread.yield();
-		
-		playerTurn.Turn("right", engine.getDeckInNumbers_right());
-		while (playerTurn.getActionsDone() != playerTurn.getCardsToBeDrawn())
-			Thread.yield();
+		for (int i = 0; i <= 1; i++) {
+			playerTurn.Turn("left", engine.getDeckInNumbers_left());
+				while (playerTurn.getActionsDone() != playerTurn.getCardsToBeDrawn())
+					Thread.yield();
+			playerTurn.setMaana_left(playerTurn.getMaana());
+			playerTurn.clearMaanaPlus_Label();
+			
+			playerTurn.Turn("right", engine.getDeckInNumbers_right());
+				while (playerTurn.getActionsDone() != playerTurn.getCardsToBeDrawn())
+					Thread.yield();
+			playerTurn.setMaana_right(playerTurn.getMaana());
+		}
 	}
 	
 	public PlayerTurn getPlayerTurn(){

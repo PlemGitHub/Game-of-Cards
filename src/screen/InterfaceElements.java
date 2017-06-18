@@ -5,6 +5,7 @@ import java.awt.Font;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import engine.Constants;
 import engine.Engine;
@@ -23,7 +24,9 @@ public class InterfaceElements implements Constants{
 	private JLabel maana_left_Label = new JLabel();
 	private JPanel maana_right_img = new ImageImport("Maana");
 	private JLabel maana_right_Label = new JLabel();
-		private JPanel mainPanel;
+		private JLabel maanaPlus_left_Label = new JLabel();
+		private JLabel maanaPlus_right_Label = new JLabel();
+	private JPanel mainPanel;
 	
 	public InterfaceElements(Table table, Engine engine) {
 		this.table = table;
@@ -43,6 +46,7 @@ public class InterfaceElements implements Constants{
 			maana_left_Label.setBounds(FIELD_XY_LEFT.get(01)+HP_MAANA_WIDTH+5, DECK_Y+DECK_HEIGTH+40+HP_MAANA_HEIGHT+40, HP_MAANA_WIDTH, HP_MAANA_HEIGHT);
 			maana_left_Label.setFont(new Font("Segoe Script", Font.BOLD, 33));
 			maana_left_Label.setForeground(Color.BLUE);
+			maana_left_Label.setHorizontalAlignment(SwingConstants.RIGHT);
 			mainPanel.add(maana_left_Label);
 			
 		maana_right_img.setBounds(FIELD_XY_RIGHT.get(01)+FIELD_WIDTH-HP_MAANA_WIDTH, DECK_Y+DECK_HEIGTH+40+HP_MAANA_HEIGHT+40, HP_MAANA_WIDTH, HP_MAANA_HEIGHT);
@@ -52,6 +56,19 @@ public class InterfaceElements implements Constants{
 			maana_right_Label.setFont(new Font("Segoe Script", Font.BOLD, 33));
 			maana_right_Label.setForeground(Color.BLUE);
 			mainPanel.add(maana_right_Label);
+			
+		maanaPlus_left_Label.setBounds(FIELD_XY_LEFT.get(01)+HP_MAANA_WIDTH+5, DECK_Y+DECK_HEIGTH+40+(HP_MAANA_HEIGHT+40)*3/2, HP_MAANA_WIDTH, HP_MAANA_HEIGHT);
+		maanaPlus_left_Label.setFont(new Font("Segoe Script", Font.BOLD, 33));
+		maanaPlus_left_Label.setForeground(Color.BLUE);
+		maanaPlus_left_Label.setHorizontalTextPosition(SwingConstants.RIGHT);
+		mainPanel.add(maanaPlus_left_Label);
+			maanaPlus_right_Label.setBounds(FIELD_XY_RIGHT.get(01)+FIELD_WIDTH-HP_MAANA_WIDTH*2-5, DECK_Y+DECK_HEIGTH+40+(HP_MAANA_HEIGHT+40)*3/2, HP_MAANA_WIDTH, HP_MAANA_HEIGHT);
+			maanaPlus_right_Label.setFont(new Font("Segoe Script", Font.BOLD, 33));
+			maanaPlus_right_Label.setForeground(Color.BLUE);
+			mainPanel.add(maanaPlus_right_Label);
+			
+//		maanaPlus_left_Label.setText("+1");
+//		maanaPlus_right_Label.setText("+1");
 	}
 
 	private void setUpHpSigns() {	// x = колода, HP_SIGN_WIDTH, промежуток 5,  HP_SIGN_WIDTH
@@ -61,6 +78,7 @@ public class InterfaceElements implements Constants{
 			hp_left_Lable.setBounds(FIELD_XY_LEFT.get(01)+HP_MAANA_WIDTH+5, DECK_Y+DECK_HEIGTH+40, HP_MAANA_WIDTH, HP_MAANA_HEIGHT);
 			hp_left_Lable.setFont(new Font("Segoe Script", Font.BOLD, 33));
 			hp_left_Lable.setForeground(Color.RED);
+			hp_left_Lable.setHorizontalAlignment(SwingConstants.RIGHT);
 			mainPanel.add(hp_left_Lable);
 		
 		hp_right_img.setBounds(FIELD_XY_RIGHT.get(01)+FIELD_WIDTH-HP_MAANA_WIDTH, DECK_Y+DECK_HEIGTH+40, HP_MAANA_WIDTH, HP_MAANA_HEIGHT);
@@ -96,4 +114,15 @@ public class InterfaceElements implements Constants{
 		public JLabel getMaana_right_Label(){
 			return maana_right_Label;
 		}
+			public JLabel getMaanaPlus_left_Label(){
+				return maanaPlus_left_Label;
+			}
+				public JLabel getMaanaPlus_right_Label(){
+					return maanaPlus_right_Label;
+				}
+	
+	public void setTextMaanaLabel(JLabel maanaLabel, String str){
+		maanaLabel.setText(str);
+	}
+	
 }

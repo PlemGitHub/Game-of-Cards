@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import TESTS.Tests;
 import screen.Table;
 
@@ -18,10 +17,12 @@ public class Engine implements Constants, ActionListener {
 	private PlayerTurnThread playerTurnThread;
 	private ArrayList<Integer> deckInNumbers_left = new ArrayList<>();	// колода 1 игрока в цифрах
 	private ArrayList<Integer> deckInNumbers_right = new ArrayList<>();	// колода 2 игрока в цифрах
-	private String[] cardsOnTable_POWER_left = new String[13];
-	private String[] cardsOnTable_POWER_right = new String[13];
-	private int hp_left;
-	private int hp_right;
+	private String[] cardsOnTable_POWER_left = new String[10];
+	private String[] cardsOnTable_POWER_right = new String[10];
+		private int[] cardsOnTable_REFUND_left = new int[10];
+		private int[] cardsOnTable_REFUND_right = new int[10];
+			private int[] cardsOnTable_COST_left = new int[10];
+			private int[] cardsOnTable_COST_right = new int[10];
 	
 	public Engine(Table table) {
 		this.table = table;
@@ -60,24 +61,40 @@ public class Engine implements Constants, ActionListener {
 		for (int i = 1; i <= 9; i++) {
 			cardsOnTable_POWER_left[i] = "n";
 			cardsOnTable_POWER_right[i] = "n";
+			cardsOnTable_REFUND_left[i] = 0;
+			cardsOnTable_REFUND_right[i] = 0;
+			cardsOnTable_COST_left[i] = 0;
+			cardsOnTable_COST_right[i] = 0;
 		}
-		
-		table.setTextOnLabel(table.getInterfaceElements().getHp_left_Label(), Integer.toString(START_HP));
-		table.setTextOnLabel(table.getInterfaceElements().getHp_right_Label(), Integer.toString(START_HP));
-		table.setTextOnLabel(table.getInterfaceElements().getMaana_left_Label(), Integer.toString(START_MAANA));
-		table.setTextOnLabel(table.getInterfaceElements().getMaana_right_Label(), Integer.toString(START_MAANA));
+
+		//============= Отрисовка начальных значений хп и мааны =============
+		table.getInterfaceElements().getHp_left_Label().setText(Integer.toString(START_HP));
+		table.getInterfaceElements().getHp_right_Label().setText(Integer.toString(START_HP));
+		table.getInterfaceElements().getMaana_right_Label().setText(Integer.toString(START_MAANA));
 		
 		//============= Генерация колод игроков =============
-		deckInNumbers_left = RandomizeDecks(tests.getLeftTEST());	// замешивание колоды 1 игрока из N_OF_CARDS карт
-		deckInNumbers_right = RandomizeDecks(tests.getRightTEST());	// замешивание колоды 2 игрока из N_OF_CARDS карт
-		
+		deckInNumbers_left = RandomizeDecks();
+		deckInNumbers_right = RandomizeDecks();
+
+		//============= TESTS =============
+		tests.getLeftTEST().setText("");
+		tests.getRightTEST().setText("");
+		for (int i = 0; i <= N_OF_CARDS-1; i++) {
+			tests.getLeftTEST().setText(tests.getLeftTEST().getText()+" "+deckInNumbers_left.get(i));
+			tests.getRightTEST().setText(tests.getRightTEST().getText()+" "+deckInNumbers_right.get(i));
+		}
+
+		//============= Запуск игры =============
 		playerTurnThread.start();
 	}
 	
-	private ArrayList<Integer> RandomizeDecks(JLabel jlabel){
+	/**
+	 * Метод генерирует колоду из N_OF_CARDS шт. карт
+	 * @return Возвращает ArrayList случайных чисел - номеров карт
+	 */
+	private ArrayList<Integer> RandomizeDecks(){
 		ArrayList<Integer> generatedNumbers = new ArrayList<>();
 		Random rnd = new Random();
-		tests.setTextOnLabel(jlabel, "");
 		int x;
 			for (int i=1; i<=N_OF_CARDS; i++){
 				x = rnd.nextInt(N_OF_CARDS)+1;
@@ -86,34 +103,36 @@ public class Engine implements Constants, ActionListener {
 				else
 					i--;
 			}
-			for (int i: generatedNumbers){ 				// УДАЛИТЬ
-				tests.setTextOnLabel(jlabel, tests.getTextOnLabel(jlabel)+" "+i);
-			}
 		return generatedNumbers;
 	}
 	
 	public ArrayList<Integer> getDeckInNumbers_left(){
 		return deckInNumbers_left;
 	}
-	public ArrayList<Integer> getDeckInNumbers_right(){
-		return deckInNumbers_right;
-	}
+		public ArrayList<Integer> getDeckInNumbers_right(){
+			return deckInNumbers_right;
+		}
 	
 	public String[] getCardsOnTable_POWER_left(){
 		return cardsOnTable_POWER_left;
 	}
-	public String[] getCardsOnTable_POWER_right(){
-		return cardsOnTable_POWER_right;
-	}
-	
+		public String[] getCardsOnTable_POWER_right(){
+			return cardsOnTable_POWER_right;
+		}
+			public int[] getCardsOnTable_REFUND_left(){
+				return cardsOnTable_REFUND_left;
+			}
+				public int[] getCardsOnTable_REFUND_right(){
+					return cardsOnTable_REFUND_right;
+				}
+					public int[] getCardsOnTable_COST_left(){
+						return cardsOnTable_COST_left;
+					}
+						public int[] getCardsOnTable_COST_right(){
+							return cardsOnTable_COST_right;
+						}
+		
 	public PlayerTurnThread getPlayerTurnThread(){
 		return playerTurnThread;
-	}
-	
-	public int getHp_left(){
-		return hp_left;
-	}
-	public int getHp_right(){
-		return hp_right;
-	}
+	}	
 }

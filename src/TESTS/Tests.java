@@ -28,13 +28,6 @@ public class Tests implements Constants{
 		table.getMainPanel().add(focusedCardLabel);
 		table.getMainPanel().add(cardsOnTablePOWERLabel);
 	}
-	
-	public void setTextOnLabel(JLabel jlabel, String str){
-		jlabel.setText(str);
-	}
-		public String getTextOnLabel(JLabel jlabel){
-			return jlabel.getText();		
-	}
 		
 	public JLabel getLeftTEST(){
 		return leftCardsLabel;
