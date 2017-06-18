@@ -21,6 +21,7 @@ public class PlayerTurn implements Constants, CardsValues{
 	private String[] cardsOnTable_POWER;
 	private int cardsToBeDrawn;
 	private String startCardPOWER;
+	@SuppressWarnings("unused")
 	private int hp;
 	
 	public PlayerTurn(Engine engine, Table table){
@@ -40,9 +41,9 @@ public class PlayerTurn implements Constants, CardsValues{
 		hp = side.equals("left")? engine.getHp_left() : engine.getHp_right();
 		cardsOnTable_POWER = side.equals("left")? engine.getCardsOnTable_POWER_left() : 
 												engine.getCardsOnTable_POWER_right();
-		tests.setTextOnLabel(tests.getFocusedCardTEST(), "focusedCard_N="+focusedCard_N);
 		focusedCard_N = 1;
 		actionsDone = 0;
+		tests.setTextOnLabel(tests.getFocusedCardTEST(), "focusedCard_N="+focusedCard_N);
 
 		
 		//============= ѕроверка на остаток количества карт =============

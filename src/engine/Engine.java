@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-
 import TESTS.Tests;
 import screen.Table;
 
@@ -63,9 +62,11 @@ public class Engine implements Constants, ActionListener {
 			cardsOnTable_POWER_right[i] = "n";
 		}
 		
-		table.setTextOnLabel(table.getHpSign_Label_left(), Integer.toString(START_HP));
-		table.setTextOnLabel(table.getHpSign_Label_right(), Integer.toString(START_HP));
-
+		table.setTextOnLabel(table.getInterfaceElements().getHp_left_Label(), Integer.toString(START_HP));
+		table.setTextOnLabel(table.getInterfaceElements().getHp_right_Label(), Integer.toString(START_HP));
+		table.setTextOnLabel(table.getInterfaceElements().getMaana_left_Label(), Integer.toString(START_MAANA));
+		table.setTextOnLabel(table.getInterfaceElements().getMaana_right_Label(), Integer.toString(START_MAANA));
+		
 		//============= Генерация колод игроков =============
 		deckInNumbers_left = RandomizeDecks(tests.getLeftTEST());	// замешивание колоды 1 игрока из N_OF_CARDS карт
 		deckInNumbers_right = RandomizeDecks(tests.getRightTEST());	// замешивание колоды 2 игрока из N_OF_CARDS карт
