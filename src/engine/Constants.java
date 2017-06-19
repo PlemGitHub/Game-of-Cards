@@ -7,6 +7,8 @@ public interface Constants {
 	public int N_OF_CARDS = 9;
 	public int START_HP = 20;
 	public int START_MAANA = 0;
+	public int BIG_FONT_SIZE = 33;
+	public int NORMAL_FONT_SIZE = 30;
 	public int dA = 5; //коэффициент для скругления углов обводки
 	public int dXY = 7; //смещение для отрисовки обводки карт
 	public int dXY2 = 2*dXY;

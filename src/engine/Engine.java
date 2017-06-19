@@ -8,6 +8,7 @@ import java.util.Random;
 import javax.swing.JButton;
 import TESTS.Tests;
 import screen.Table;
+import threads.PlayerTurnThread;
 
 public class Engine implements Constants, ActionListener {
 	
@@ -23,6 +24,10 @@ public class Engine implements Constants, ActionListener {
 		private int[] cardsOnTable_REFUND_right = new int[10];
 			private int[] cardsOnTable_COST_left = new int[10];
 			private int[] cardsOnTable_COST_right = new int[10];
+				private int[] cardsOnTable_HEALTH_left = new int[10];
+				private int[] cardsOnTable_HEALTH_right = new int[10];
+					private int[] cardsOnTable_ATTACK_left = new int[10];
+					private int[] cardsOnTable_ATTACK_right = new int[10];
 	
 	public Engine(Table table) {
 		this.table = table;
@@ -38,7 +43,7 @@ public class Engine implements Constants, ActionListener {
 	 * 
 	 */
 	public void newGame(){
-		playerTurnThread = new PlayerTurnThread(this, table);
+		playerTurnThread = new PlayerTurnThread(table, this);
 		playerTurn = playerTurnThread.getPlayerTurn();
 		tests = table.getTests();
 		Component componentToRemove;
@@ -71,6 +76,7 @@ public class Engine implements Constants, ActionListener {
 		table.getInterfaceElements().getHp_left_Label().setText(Integer.toString(START_HP));
 		table.getInterfaceElements().getHp_right_Label().setText(Integer.toString(START_HP));
 		table.getInterfaceElements().getMaana_right_Label().setText(Integer.toString(START_MAANA));
+		table.getInterfaceElements().getMaanaPlus_right_Label().setText("");
 		
 		//============= Генерация колод игроков =============
 		deckInNumbers_left = RandomizeDecks();
@@ -131,6 +137,18 @@ public class Engine implements Constants, ActionListener {
 						public int[] getCardsOnTable_COST_right(){
 							return cardsOnTable_COST_right;
 						}
+							public int[] getCardsOnTable_HEALTH_left(){
+								return cardsOnTable_HEALTH_left;
+							}
+								public int[] getCardsOnTable_HEALTH_right(){
+									return cardsOnTable_HEALTH_right;
+								}
+									public int[] getCardsOnTable_ATTACK_left(){
+										return cardsOnTable_ATTACK_left;
+									}
+										public int[] getCardsOnTable_ATTACK_right(){
+											return cardsOnTable_ATTACK_right;
+										}
 		
 	public PlayerTurnThread getPlayerTurnThread(){
 		return playerTurnThread;

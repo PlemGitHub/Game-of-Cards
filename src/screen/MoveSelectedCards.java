@@ -1,15 +1,19 @@
 package screen;
 
+import java.awt.Component;
 import java.util.HashMap;
+import javax.swing.JLabel;
 import TESTS.Tests;
+import engine.CardsValues;
 import engine.Constants;
 import engine.Engine;
 import engine.PlayerTurn;
 
-public class MoveSelectedCards implements Constants {
+public class MoveSelectedCards implements Constants, CardsValues {
 	private Table table;
 	private Engine engine;
 	private Tests tests;
+	private InterfaceElements iel;
 	private PlayerTurn playerTurn;
 	private int focusedCard_N_ToSwitch_old;
 	private int focusedCard_N_ToSwitch_new;
@@ -20,9 +24,10 @@ public class MoveSelectedCards implements Constants {
 	private int new_x;
 	private int new_y;
 	
-	public MoveSelectedCards(Table table, Engine engine) {
+	public MoveSelectedCards(Table table, Engine engine, InterfaceElements iel) {
 		this.table = table;
 		this.engine = engine;
+		this.iel = iel;
 	}
 	
 	public void moveCard(String dir){
@@ -42,7 +47,7 @@ public class MoveSelectedCards implements Constants {
 						//============= Если в направлении движения карты ЕСТЬ другая карта =============
 						if (!playerTurn.getCardsOnTable_POWER()[playerTurn.getFocusedCard_N()+i].equals("n")){
 							if (playerTurn.getFocusedCard_N()+i >= 7 && 
-									possibleToSwitchCards(playerTurn.getFocusedCard_N()+i)) break; 	// если мы в 1 ряду, и карту НУЖНО подвинуть во второй ряд
+									possibleToMoveCardFromCenter(playerTurn.getFocusedCard_N()+i)) break; 	// если мы в 1 ряду, и карту НУЖНО подвинуть во второй ряд
 							if (checkSpaceOnOtherLine(playerTurn.getFocusedCard_N()+i)) break;		// если двигать карту НЕ НУЖНО, но есть место во втором ряду
 							continue;
 						}
@@ -66,7 +71,7 @@ public class MoveSelectedCards implements Constants {
 						//============= Если в направлении движения карты ЕСТЬ другая карта =============
 						if (!playerTurn.getCardsOnTable_POWER()[playerTurn.getFocusedCard_N()-i].equals("n")){
 							if (playerTurn.getFocusedCard_N()+i >= 7 && 
-									possibleToSwitchCards(playerTurn.getFocusedCard_N()-i)) break; 	// если мы в 1 ряду, и карту НУЖНО подвинуть во второй ряд
+									possibleToMoveCardFromCenter(playerTurn.getFocusedCard_N()-i)) break; 	// если мы в 1 ряду, и карту НУЖНО подвинуть во второй ряд
 							if (checkSpaceOnOtherLine(playerTurn.getFocusedCard_N()-i)) break;		// если двигать карту НЕ НУЖНО, но есть место во втором ряду
 							continue;
 						}
@@ -85,7 +90,15 @@ public class MoveSelectedCards implements Constants {
 				if (playerTurn.getFocusedCard_N() <= 3 && playerTurn.getCardsOnTable_COST()[playerTurn.getFocusedCard_N()] <= playerTurn.getMaana()){
 					startFocusedCard_N = playerTurn.getFocusedCard_N();
 					findNewSpaceOnTable();
+					break;
 				}
+					if (playerTurn.getFocusedCard_N() <= 3 && playerTurn.getCardsOnTable_COST()[playerTurn.getFocusedCard_N()] > playerTurn.getMaana()){
+						playerTurn.doRedFlash();
+						break;
+					}
+				if (playerTurn.getFocusedCard_N() >= 4 && 
+						playerTurn.getFocusedCard_N() <= 6 &&
+							possibleToSwitchCards(playerTurn.getFocusedCard_N()+3)) break;
 			} break;
 			
 			case "left": {
@@ -94,7 +107,9 @@ public class MoveSelectedCards implements Constants {
 						setFocusAfterAction();
 				}
 				else {
+					if (playerTurn.getFocusedCard_N() >= 7 && possibleToSwitchCards(playerTurn.getFocusedCard_N()-3)) break;
 					changeFocusedCardAndMoveSelectedCardOnTable(startFocusedCard_N);
+					iel.setTextMaanaLabel(playerTurn.getMaanaPlus_Label(), "+"+playerTurn.getStartCardREFUND());
 				}
 			} break;
 			
@@ -105,15 +120,15 @@ public class MoveSelectedCards implements Constants {
 				else {
 					playerTurn.setUnselectOnCard();				
 					playerTurn.setUnfocusOnCard();
-					playerTurn.setActionsDone(playerTurn.getActionsDone()+1);
 					playerTurn.decreaseMaanaForCard();
+					playerTurn.setActionsDone(playerTurn.getActionsDone()+1);
 					setFocusAfterAction();
 				}
 			} break;
 		}
 		checkSpaceToFillTableCenter();
 	}
-	
+
 	private void checkSpaceToFillTableCenter() {
 		int checkPos;
 		//int dX = playerTurn.getSide().equals("left")? 10:-10;
@@ -133,12 +148,32 @@ public class MoveSelectedCards implements Constants {
 		}
 		
 	}
+	
+	private boolean possibleToSwitchCards(int focusedCardToCheck){
+		int dX = playerTurn.getSide().equals("left")? 10 : -10;
+		if (!playerTurn.getCardsOnTable_POWER()[focusedCardToCheck].equals("n")){
+				Component myCard = table.findComponentOnMainPanel(old_x+10, old_y);
+			int switchCard_x = card_xy.get(focusedCardToCheck*10+1);
+			int switchCard_y = card_xy.get(focusedCardToCheck*10+2);
+				Component switchCard = table.findComponentOnMainPanel(switchCard_x+10, switchCard_y);
+				
+			myCard.setLocation(switchCard_x+dX, switchCard_y-10);
+			switchCard.setLocation(old_x, old_y);
+			playerTurn.setCardsOnTable_POWER(playerTurn.getFocusedCard_N(), playerTurn.getCardsOnTable_POWER()[focusedCardToCheck]);
+			playerTurn.setCardsOnTable_POWER(focusedCardToCheck, playerTurn.getStartCardPOWER());
+			playerTurn.setFocusedCard_N(focusedCardToCheck);
+			tests.fillInCardsOnTablePOWERLabel();
+			
+			return true;
+		}
+		return false;
+	}
 
-	private boolean possibleToSwitchCards(int focusedCardToCheck) {		
-		String powerOnNewPosition = playerTurn.getCardsOnTable_POWER()[focusedCardToCheck];
-			if (playerTurn.getCardsOnTable_POWER()[focusedCardToCheck-3].equals("n"))
+	private boolean possibleToMoveCardFromCenter(int focusedCardToMove) {		
+		String powerOnNewPosition = playerTurn.getCardsOnTable_POWER()[focusedCardToMove];
+			if (playerTurn.getCardsOnTable_POWER()[focusedCardToMove-3].equals("n"))
 			{
-				focusedCard_N_ToSwitch_old = focusedCardToCheck;
+				focusedCard_N_ToSwitch_old = focusedCardToMove;
 				focusedCard_N_ToSwitch_new = focusedCard_N_ToSwitch_old-3;
 				table.moveCardOnTable(card_xy.get(focusedCard_N_ToSwitch_old*10+1),
 										card_xy.get(focusedCard_N_ToSwitch_old*10+2),
@@ -147,7 +182,7 @@ public class MoveSelectedCards implements Constants {
 				playerTurn.setCardsOnTable_POWER(focusedCard_N_ToSwitch_new, powerOnNewPosition);
 				playerTurn.setCardsOnTable_POWER(focusedCard_N_ToSwitch_old, "n");
 				tests.fillInCardsOnTablePOWERLabel();
-				changeFocusedCardAndMoveSelectedCardOnTable(focusedCardToCheck);
+				changeFocusedCardAndMoveSelectedCardOnTable(focusedCardToMove);
 				return true;
 			}
 		return false;
@@ -186,6 +221,8 @@ public class MoveSelectedCards implements Constants {
 			for (int k = 1; k<=3; k++)
 				if (!playerTurn.getCardsOnTable_POWER()[i*3+k].equals("n")) continue;
 					else {
+						JLabel maanaPlus = playerTurn.getSide().equals("left")? iel.getMaanaPlus_left_Label():iel.getMaanaPlus_right_Label();
+						maanaPlus.setText("-"+Integer.toString(playerTurn.getStartCardCOST()));
 						changeFocusedCardAndMoveSelectedCardOnTable(i*3+k);
 							i=0; // чтобы выйти из внешнего цикла
 							break;

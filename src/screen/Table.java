@@ -12,6 +12,7 @@ import TESTS.Tests;
 import engine.Constants;
 import engine.Engine;
 import engine.PlayerTurn;
+import panels.PanelMainTable;
 
 public class Table implements Constants, KeyListener {
 
@@ -27,8 +28,8 @@ public class Table implements Constants, KeyListener {
 	
 	Table(){
 		engine = new Engine(this);
-		msc = new MoveSelectedCards(this, engine);
 		iel = new InterfaceElements(this, engine);
+		msc = new MoveSelectedCards(this, engine, iel);
 		
 		mainPanel.setLayout(null);
 		mainPanel.setBackground(Color.WHITE);

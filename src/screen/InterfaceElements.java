@@ -9,7 +9,8 @@ import javax.swing.SwingConstants;
 
 import engine.Constants;
 import engine.Engine;
-import engine.ImageImport;
+import panels.ImageImport;
+import panels.PanelDecks;
 
 public class InterfaceElements implements Constants{
 	private Table table;
@@ -44,7 +45,7 @@ public class InterfaceElements implements Constants{
 		maana_left_img.setOpaque(false);
 		mainPanel.add(maana_left_img);
 			maana_left_Label.setBounds(FIELD_XY_LEFT.get(01)+HP_MAANA_WIDTH+5, DECK_Y+DECK_HEIGTH+40+HP_MAANA_HEIGHT+40, HP_MAANA_WIDTH, HP_MAANA_HEIGHT);
-			maana_left_Label.setFont(new Font("Segoe Script", Font.BOLD, 33));
+			maana_left_Label.setFont(new Font("Segoe Script", Font.BOLD, 30));
 			maana_left_Label.setForeground(Color.BLUE);
 			maana_left_Label.setHorizontalAlignment(SwingConstants.RIGHT);
 			mainPanel.add(maana_left_Label);
@@ -53,17 +54,17 @@ public class InterfaceElements implements Constants{
 		maana_right_img.setOpaque(false);
 		mainPanel.add(maana_right_img);
 			maana_right_Label.setBounds(FIELD_XY_RIGHT.get(01)+FIELD_WIDTH-HP_MAANA_WIDTH*2-5, DECK_Y+DECK_HEIGTH+40+HP_MAANA_HEIGHT+40, HP_MAANA_WIDTH, HP_MAANA_HEIGHT);
-			maana_right_Label.setFont(new Font("Segoe Script", Font.BOLD, 33));
+			maana_right_Label.setFont(new Font("Segoe Script", Font.BOLD, 30));
 			maana_right_Label.setForeground(Color.BLUE);
 			mainPanel.add(maana_right_Label);
 			
 		maanaPlus_left_Label.setBounds(FIELD_XY_LEFT.get(01)+HP_MAANA_WIDTH+5, DECK_Y+DECK_HEIGTH+40+(HP_MAANA_HEIGHT+40)*3/2, HP_MAANA_WIDTH, HP_MAANA_HEIGHT);
-		maanaPlus_left_Label.setFont(new Font("Segoe Script", Font.BOLD, 33));
+		maanaPlus_left_Label.setFont(new Font("Segoe Script", Font.BOLD, 30));
 		maanaPlus_left_Label.setForeground(Color.BLUE);
 		maanaPlus_left_Label.setHorizontalTextPosition(SwingConstants.RIGHT);
 		mainPanel.add(maanaPlus_left_Label);
 			maanaPlus_right_Label.setBounds(FIELD_XY_RIGHT.get(01)+FIELD_WIDTH-HP_MAANA_WIDTH*2-5, DECK_Y+DECK_HEIGTH+40+(HP_MAANA_HEIGHT+40)*3/2, HP_MAANA_WIDTH, HP_MAANA_HEIGHT);
-			maanaPlus_right_Label.setFont(new Font("Segoe Script", Font.BOLD, 33));
+			maanaPlus_right_Label.setFont(new Font("Segoe Script", Font.BOLD, 30));
 			maanaPlus_right_Label.setForeground(Color.BLUE);
 			mainPanel.add(maanaPlus_right_Label);
 			
