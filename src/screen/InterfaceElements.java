@@ -67,9 +67,6 @@ public class InterfaceElements implements Constants{
 			maanaPlus_right_Label.setFont(new Font("Segoe Script", Font.BOLD, 30));
 			maanaPlus_right_Label.setForeground(Color.BLUE);
 			mainPanel.add(maanaPlus_right_Label);
-			
-//		maanaPlus_left_Label.setText("+1");
-//		maanaPlus_right_Label.setText("+1");
 	}
 
 	private void setUpHpSigns() {	// x = колода, HP_SIGN_WIDTH, промежуток 5,  HP_SIGN_WIDTH
@@ -122,8 +119,8 @@ public class InterfaceElements implements Constants{
 					return maanaPlus_right_Label;
 				}
 	
-	public void setTextMaanaLabel(JLabel maanaLabel, String str){
-		maanaLabel.setText(str);
+	public void setTextOnLabel(JLabel label, String str){
+		label.setText(str);
 	}
 	
 }

@@ -18,8 +18,8 @@ public class Tests implements Constants{
 	}
 	
 	public void setUpTESTSComponents(){
-//		leftCardsLabel.setBounds(50, 500, 100, 20);								
-//		rightCardsLabel.setBounds(DISPLAY_RESOLUTION_X-50-100, 500, 100, 20);		
+		leftCardsLabel.setBounds(50, 500, 100, 20);								
+		rightCardsLabel.setBounds(DISPLAY_RESOLUTION_X-50-100, 500, 100, 20);		
 		focusedCardLabel.setBounds(50, 50, 200, 20);
 		cardsOnTablePOWERLabel.setBounds(300, 50, 200, 20);
 		

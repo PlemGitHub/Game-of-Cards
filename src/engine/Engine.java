@@ -18,16 +18,18 @@ public class Engine implements Constants, ActionListener {
 	private PlayerTurnThread playerTurnThread;
 	private ArrayList<Integer> deckInNumbers_left = new ArrayList<>();	// колода 1 игрока в цифрах
 	private ArrayList<Integer> deckInNumbers_right = new ArrayList<>();	// колода 2 игрока в цифрах
-	private String[] cardsOnTable_POWER_left = new String[10];
-	private String[] cardsOnTable_POWER_right = new String[10];
-		private int[] cardsOnTable_REFUND_left = new int[10];
-		private int[] cardsOnTable_REFUND_right = new int[10];
-			private int[] cardsOnTable_COST_left = new int[10];
-			private int[] cardsOnTable_COST_right = new int[10];
-				private int[] cardsOnTable_HEALTH_left = new int[10];
-				private int[] cardsOnTable_HEALTH_right = new int[10];
-					private int[] cardsOnTable_ATTACK_left = new int[10];
-					private int[] cardsOnTable_ATTACK_right = new int[10];
+	private int[] cardsOnTable_N_left = new int[10];
+	private int[] cardsOnTable_N_right = new int[10];
+		private String[] cardsOnTable_POWER_left = new String[10];
+		private String[] cardsOnTable_POWER_right = new String[10];
+			private int[] cardsOnTable_REFUND_left = new int[10];
+			private int[] cardsOnTable_REFUND_right = new int[10];
+				private int[] cardsOnTable_COST_left = new int[10];
+				private int[] cardsOnTable_COST_right = new int[10];
+					private int[] cardsOnTable_HEALTH_left = new int[10];
+					private int[] cardsOnTable_HEALTH_right = new int[10];
+						private int[] cardsOnTable_ATTACK_left = new int[10];
+						private int[] cardsOnTable_ATTACK_right = new int[10];
 	
 	public Engine(Table table) {
 		this.table = table;
@@ -118,37 +120,43 @@ public class Engine implements Constants, ActionListener {
 		public ArrayList<Integer> getDeckInNumbers_right(){
 			return deckInNumbers_right;
 		}
-	
-	public String[] getCardsOnTable_POWER_left(){
-		return cardsOnTable_POWER_left;
+		
+	public int[] getCardsOnTable_N_left(){
+		return cardsOnTable_N_left;
 	}
-		public String[] getCardsOnTable_POWER_right(){
-			return cardsOnTable_POWER_right;
+		public int[] getCardsOnTable_N_right(){
+			return cardsOnTable_N_right;
 		}
-			public int[] getCardsOnTable_REFUND_left(){
-				return cardsOnTable_REFUND_left;
+			public String[] getCardsOnTable_POWER_left(){
+				return cardsOnTable_POWER_left;
 			}
-				public int[] getCardsOnTable_REFUND_right(){
-					return cardsOnTable_REFUND_right;
+				public String[] getCardsOnTable_POWER_right(){
+					return cardsOnTable_POWER_right;
 				}
-					public int[] getCardsOnTable_COST_left(){
-						return cardsOnTable_COST_left;
+					public int[] getCardsOnTable_REFUND_left(){
+						return cardsOnTable_REFUND_left;
 					}
-						public int[] getCardsOnTable_COST_right(){
-							return cardsOnTable_COST_right;
+						public int[] getCardsOnTable_REFUND_right(){
+							return cardsOnTable_REFUND_right;
 						}
-							public int[] getCardsOnTable_HEALTH_left(){
-								return cardsOnTable_HEALTH_left;
+							public int[] getCardsOnTable_COST_left(){
+								return cardsOnTable_COST_left;
 							}
-								public int[] getCardsOnTable_HEALTH_right(){
-									return cardsOnTable_HEALTH_right;
+								public int[] getCardsOnTable_COST_right(){
+									return cardsOnTable_COST_right;
 								}
-									public int[] getCardsOnTable_ATTACK_left(){
-										return cardsOnTable_ATTACK_left;
+									public int[] getCardsOnTable_HEALTH_left(){
+										return cardsOnTable_HEALTH_left;
 									}
-										public int[] getCardsOnTable_ATTACK_right(){
-											return cardsOnTable_ATTACK_right;
+										public int[] getCardsOnTable_HEALTH_right(){
+											return cardsOnTable_HEALTH_right;
 										}
+											public int[] getCardsOnTable_ATTACK_left(){
+												return cardsOnTable_ATTACK_left;
+											}
+												public int[] getCardsOnTable_ATTACK_right(){
+													return cardsOnTable_ATTACK_right;
+												}
 		
 	public PlayerTurnThread getPlayerTurnThread(){
 		return playerTurnThread;

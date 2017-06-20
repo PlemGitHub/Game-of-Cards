@@ -4,11 +4,12 @@ import java.awt.Toolkit;
 import java.util.HashMap;
 
 public interface Constants {
-	public int N_OF_CARDS = 9;
+	public int N_OF_CARDS = 3;
 	public int START_HP = 20;
-	public int START_MAANA = 0;
-	public int BIG_FONT_SIZE = 33;
+	public int START_MAANA = 30;
+	public int BIG_FONT_SIZE = 34;
 	public int NORMAL_FONT_SIZE = 30;
+	public int CARDS_MOVEMENT_SPEED = 20;
 	public int dA = 5; //коэффициент для скругления углов обводки
 	public int dXY = 7; //смещение для отрисовки обводки карт
 	public int dXY2 = 2*dXY;
@@ -25,8 +26,8 @@ public interface Constants {
 	public int DECK_HEIGTH = 164;					// высота колоды
 	public int FIELD_WIDTH = CARD_WIDTH+dXY2;		// ширина обводки
 	public int FIELD_HEIGHT = CARD_HEIGHT+dXY2;		// высота обводки
-	public int HP_MAANA_WIDTH = 48;
-	public int HP_MAANA_HEIGHT = 48;
+	public int HP_MAANA_WIDTH = 50;
+	public int HP_MAANA_HEIGHT = 50;
 	
 	public int FIELD_TO_DECK_WIDTH = (FIELD_WIDTH-DECK_WIDTH)/2; 	// переход от Обводки к Колоде
 	public int FIELD_TO_DECK_HEIGHT = (FIELD_HEIGHT-DECK_HEIGTH)/2; // переход от Обводки к Колоде

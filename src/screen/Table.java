@@ -65,7 +65,7 @@ public class Table implements Constants, KeyListener {
 				keyPressedWithSelectedCard(c);
 			else
 				keyPressedWithUnselectedCard(c);
-		} catch (NullPointerException e1) {}
+		} catch (NullPointerException e1) {e1.printStackTrace();}
 	
 		if (e.getKeyChar()==27)
 			System.exit(0);
@@ -173,8 +173,8 @@ public class Table implements Constants, KeyListener {
 			mainPanel.remove(componentToRemove);
 		}	
 			public Component findComponentOnMainPanel(int x, int y){
-				Component componentToRemove = mainPanel.findComponentAt(x,y);
-				return componentToRemove;
+				Component component = mainPanel.findComponentAt(x,y);
+				return component;
 			}
 				public void moveCardOnTable(int old_x, int old_y, int new_x, int new_y){
 					mainPanel.findComponentAt(old_x+10, old_y).setLocation(new_x, new_y);

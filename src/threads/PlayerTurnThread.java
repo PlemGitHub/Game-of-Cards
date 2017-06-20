@@ -17,7 +17,7 @@ public class PlayerTurnThread extends Thread implements Constants{
 	
 	@Override
 	public void run() {
-		for (int i = 0; i <= 1; i++) {
+		do{
 			//============= ÕÎÄ ÏÅÐÂÎÃÎ ÈÃÐÎÊÀ =============
 			playerTurn.Turn("left", engine.getDeckInNumbers_left());
 				checkThreads();
@@ -29,7 +29,8 @@ public class PlayerTurnThread extends Thread implements Constants{
 				checkThreads();
 			playerTurn.setMaana_right(playerTurn.getMaana());
 			playerTurn.clearMaanaPlus_Label();
-		}
+		
+		} while (true);
 	}
 	
 	public void checkThreads(){
