@@ -9,7 +9,8 @@ public interface Constants {
 	public int START_MAANA = 30;
 	public int BIG_FONT_SIZE = 34;
 	public int NORMAL_FONT_SIZE = 30;
-	public int CARDS_MOVEMENT_SPEED = 20;
+	public int CARDS_MOVEMENT_TIME_MS = 100;
+	public int CARDS_MOVEMENT_DIV = 15;
 	public int dA = 5; //коэффициент для скругления углов обводки
 	public int dXY = 7; //смещение для отрисовки обводки карт
 	public int dXY2 = 2*dXY;
@@ -47,8 +48,6 @@ public interface Constants {
 	public int Y1 = MIDDLE_Y-FIELD_HEIGHT*3/2-dXY2;		// Y первого ряда
 	public int Y2 = MIDDLE_Y-FIELD_HEIGHT/2;				// Y второго ряда
 	public int Y3 = MIDDLE_Y+FIELD_HEIGHT/2+dXY2;				// Y третьего ряда
-	
-	public int DECK_Y = Y1 + FIELD_TO_DECK_HEIGHT;		// верхний край колоды
 	
 	public HashMap<Integer, Integer> FIELD_XY_LEFT = new HashMap<Integer,Integer>(){
 		private static final long serialVersionUID = 1L;
@@ -115,6 +114,8 @@ public interface Constants {
 				put(81, X_RIGHT_3+FIELD_TO_CARD_XY); put(82, Y2+FIELD_TO_CARD_XY);
 				put(91, X_RIGHT_3+FIELD_TO_CARD_XY); put(92, Y3+FIELD_TO_CARD_XY);
 				}};
-		public int X_LEFT_DECK = X_LEFT_0 + FIELD_TO_DECK_WIDTH;	// Х колоды левого игрока
-		public int X_RIGHT_DECK = X_RIGHT_0 + FIELD_TO_DECK_WIDTH;	// Х колоды правого игрока
+				
+		public int DECK_X_LEFT = X_LEFT_0 + FIELD_TO_DECK_WIDTH;	// Х колоды левого игрока
+		public int DECK_X_RIGHT = X_RIGHT_0 + FIELD_TO_DECK_WIDTH;	// Х колоды правого игрока
+		public int DECK_Y = Y1 + FIELD_TO_DECK_HEIGHT;				// верхний край колоды
 	}

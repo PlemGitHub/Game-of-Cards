@@ -187,8 +187,6 @@ public class Table implements Constants, KeyListener {
 			return newGameButton;
 		}
 
-
-
 	public Tests getTests(){
 		return tests;
 	}
@@ -201,7 +199,7 @@ public class Table implements Constants, KeyListener {
 	
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
-		Table table = new Table();
+			Table table = new Table();
 	}
 }
 

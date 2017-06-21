@@ -89,8 +89,8 @@ public class InterfaceElements implements Constants{
 	}
 
 	private void setUpDecksAndButton() {
-		deckCard_left.setBounds(X_LEFT_DECK, DECK_Y, DECK_WIDTH, DECK_HEIGTH);
-		deckCard_right.setBounds(X_RIGHT_DECK, DECK_Y, DECK_WIDTH, DECK_HEIGTH);
+		deckCard_left.setBounds(DECK_X_LEFT, DECK_Y, DECK_WIDTH, DECK_HEIGTH);
+		deckCard_right.setBounds(DECK_X_RIGHT, DECK_Y, DECK_WIDTH, DECK_HEIGTH);
 		mainPanel.add(deckCard_left);
 		mainPanel.add(deckCard_right);
 			table.getNewGameButton().setBounds(MIDDLE_X-50, 0, 100, 50);

@@ -44,8 +44,9 @@ public class PlayerTurn implements Constants, CardsValues{
 	private int maana_right = START_MAANA;
 	private JLabel maana_Label;
 	private JLabel maanaPlus_Label;
-	FlashOnMaana_RED redFlash = new FlashOnMaana_RED(this);
-	FlashOnMaana_GREEN greenFlash = new FlashOnMaana_GREEN(this);
+		// если не создать new, то может быть null в PlayerTurnThread.class при проверке checkThreads();
+		private FlashOnMaana_RED redFlash = new FlashOnMaana_RED(this); 
+		private FlashOnMaana_GREEN greenFlash = new FlashOnMaana_GREEN(this);
 	
 	public PlayerTurn(Engine engine, Table table){
 		this.table = table;
@@ -121,7 +122,7 @@ public class PlayerTurn implements Constants, CardsValues{
 		int y = card_xy.get(focusedCard_N*10+2);
 		int dX = side.equals("left")? 10: -10;
 			Component selectedCard = table.findComponentOnMainPanel(x+10, y);
-			if (selectedCard != table.getMainPanel())
+//			if (selectedCard != table.getMainPanel())
 				selectedCard.setLocation(selectedCard.getX()-dX, selectedCard.getY());
 	}
 		public void setFocusOnCard(){
@@ -129,11 +130,18 @@ public class PlayerTurn implements Constants, CardsValues{
 			int y = card_xy.get(focusedCard_N*10+2);
 			int dX = side.equals("left")? 10: -10;
 				Component selectedCard = table.findComponentOnMainPanel(x+10, y);
-				if (selectedCard != table.getMainPanel())
+//				if (selectedCard != table.getMainPanel())
 					selectedCard.setLocation(selectedCard.getX()+dX, selectedCard.getY());
 				iel.setTextOnLabel(maanaPlus_Label, "+"+Integer.toString(cardsOnTable_REFUND[focusedCard_N]));
 		}
-	
+			public void setFocusAfterAction(){
+				for (int i = 1; i <= 3; i++)
+					if (!cardsOnTable_POWER[i].equals("n")){
+						setFocusedCard_N(i);
+						setFocusOnCard();
+						break;
+					}
+			}
 	/*
 	 * Устанавливают или снимают выбор карты для дальнейшего действия
 	 */
@@ -165,10 +173,9 @@ public class PlayerTurn implements Constants, CardsValues{
 	public void cardToMaana(){
 		int x = card_xy.get(focusedCard_N*10+1);
 		int y = card_xy.get(focusedCard_N*10+2);
-			Component selectedCard = table.findComponentOnMainPanel(x+10, y);
-			table.getMainPanel().remove(selectedCard);
+			table.getMainPanel().remove(table.findComponentOnMainPanel(x+10, y));
 			cardIsSelected = false;
-			cardsOnTable_POWER[focusedCard_N] = "n";
+			cardsOnTable_POWER[focusedCard_N] = "n"; // нужно для setFocusAfterAction()
 			tests.fillInCardsOnTablePOWERLabel();
 			maana += cardsOnTable_REFUND[focusedCard_N];
 			iel.setTextOnLabel(maana_Label, Integer.toString(maana));

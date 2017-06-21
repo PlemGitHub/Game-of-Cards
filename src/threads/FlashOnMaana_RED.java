@@ -23,6 +23,5 @@ public class FlashOnMaana_RED extends Thread implements Constants{
 				}
 			playerTurn.getMaana_Label().setForeground(Color.BLUE);
 			playerTurn.getMaana_Label().setFont(new Font("Segoe Script", Font.BOLD, NORMAL_FONT_SIZE));
-//			mainPanel.repaint();
 	}
 }

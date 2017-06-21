@@ -23,113 +23,131 @@ public class MoveSelectedCards implements Constants, CardsValues {
 	private int old_y;
 	private int new_x;
 	private int new_y;
-	private CardsMovementThr cardsMovementThr;
+	private CardsMovementThr cardsMovementThr = new CardsMovementThr(table, old_x, old_y, new_x, new_y);
 	
 	public MoveSelectedCards(Table table, Engine engine, InterfaceElements iel) {
 		this.table = table;
 		this.engine = engine;
 		this.iel = iel;
 	}
-	
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////// MOVE CARD BLOCK /////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void moveCard(String dir){
-		playerTurn = engine.getPlayerTurnThread().getPlayerTurn();
-		tests = table.getTests();
-		card_xy = playerTurn.getCard_XY();
-		old_x = card_xy.get(playerTurn.getFocusedCard_N()*10+1);
-		old_y = card_xy.get(playerTurn.getFocusedCard_N()*10+2);
-		switch (dir){
-			case "down":{
-				if (playerTurn.getFocusedCard_N() >= 4){
-					for (int i = 1; i <= 2; i++) {
+		if (!cardsMovementThr.isAlive()){
+			playerTurn = engine.getPlayerTurnThread().getPlayerTurn();
+			tests = table.getTests();
+			card_xy = playerTurn.getCard_XY();
+			old_x = card_xy.get(playerTurn.getFocusedCard_N()*10+1);
+			old_y = card_xy.get(playerTurn.getFocusedCard_N()*10+2);
+			switch (dir){
+				case "down": doMoveDown(); break;
+				
+				case "up": doMoveUp(); break;
+				
+				case "right": doMoveRight(); break;
+				
+				case "left": doMoveLeft(); break;
+				
+				case " ": doMoveSpace(); break;
+			}
+			checkSpaceToFillTableCenter();
+		}
+	}
+	
+	public void doMoveDown(){
+		if (playerTurn.getFocusedCard_N() >= 4){
+			for (int i = 1; i <= 2; i++) {
 
-						//============= Если карта находится НА КРАЮ СТОЛА, то не делать ничего =============
-						if (playerTurn.getFocusedCard_N()+i == 10 || 
-								playerTurn.getFocusedCard_N()+i == 7) break;	
-						//============= Если в направлении движения карты ЕСТЬ другая карта =============
-						if (!playerTurn.getCardsOnTable_POWER()[playerTurn.getFocusedCard_N()+i].equals("n")){
-							if (playerTurn.getFocusedCard_N()+i >= 7 && 
-									possibleToMoveCardFromCenter(playerTurn.getFocusedCard_N()+i)) break; 	// если мы в 1 ряду, и карту НУЖНО подвинуть во второй ряд
-							if (checkSpaceOnOtherLine(playerTurn.getFocusedCard_N()+i)) break;		// если двигать карту НЕ НУЖНО, но есть место во втором ряду
-							continue;
-						}
-						//============= Если в направлении движения карты НЕТ другой карты =============
-						if (playerTurn.getCardsOnTable_POWER()[playerTurn.getFocusedCard_N()+i].equals("n")){
-							if (playerTurn.getFocusedCard_N() <= 6 &&
-									checkSpaceOnOtherLine(playerTurn.getFocusedCard_N()+i)) break;			// если карта во втором ряду, а в направлении есть свободное место в первом
-							changeFocusedCardAndMoveSelectedCardOnTable(playerTurn.getFocusedCard_N()+i);	// двигать карту, если ничего не мешает
-							break;
-						}
-					}
+				//============= Если карта находится НА КРАЮ СТОЛА, то не делать ничего =============
+				if (playerTurn.getFocusedCard_N()+i == 10 || 
+						playerTurn.getFocusedCard_N()+i == 7) break;	
+				//============= Если в направлении движения карты ЕСТЬ другая карта =============
+				if (!playerTurn.getCardsOnTable_POWER()[playerTurn.getFocusedCard_N()+i].equals("n")){
+					if (playerTurn.getFocusedCard_N()+i >= 7 && 
+							possibleToMoveCardFromCenter(playerTurn.getFocusedCard_N()+i)) break; 	// если мы в 1 ряду, и карту НУЖНО подвинуть во второй ряд
+					if (checkSpaceOnOtherLine(playerTurn.getFocusedCard_N()+i)) break;		// если двигать карту НЕ НУЖНО, но есть место во втором ряду
+					continue;
 				}
-			} break;
-			
-			case "up":{
-				if (playerTurn.getFocusedCard_N() >= 4){
-					for (int i = 1; i <= 2; i++) {
-						//============= Если карта находится НА КРАЮ СТОЛА, то не делать ничего =============
-						if (playerTurn.getFocusedCard_N()-i == 6 || 
-								playerTurn.getFocusedCard_N()-i == 3) break;
-						//============= Если в направлении движения карты ЕСТЬ другая карта =============
-						if (!playerTurn.getCardsOnTable_POWER()[playerTurn.getFocusedCard_N()-i].equals("n")){
-							if (playerTurn.getFocusedCard_N()+i >= 7 && 
-									possibleToMoveCardFromCenter(playerTurn.getFocusedCard_N()-i)) break; 	// если мы в 1 ряду, и карту НУЖНО подвинуть во второй ряд
-							if (checkSpaceOnOtherLine(playerTurn.getFocusedCard_N()-i)) break;		// если двигать карту НЕ НУЖНО, но есть место во втором ряду
-							continue;
-						}
-						//============= Если в направлении движения карты НЕТ другой карты =============
-						if (playerTurn.getCardsOnTable_POWER()[playerTurn.getFocusedCard_N()-i].equals("n")){
-							if (playerTurn.getFocusedCard_N() <= 6 && 
-									checkSpaceOnOtherLine(playerTurn.getFocusedCard_N()-i)) break;			// если карта во втором ряду, а в направлении есть свободное место в первом
-							changeFocusedCardAndMoveSelectedCardOnTable(playerTurn.getFocusedCard_N()-i);	// двигать карту, если ничего не мешает
-							break;
-						}
-					}
-				}
-			} break;
-			
-			case "right":{
-				if (playerTurn.getFocusedCard_N() <= 3 && playerTurn.getCardsOnTable_COST()[playerTurn.getFocusedCard_N()] <= playerTurn.getMaana()){
-					startFocusedCard_N = playerTurn.getFocusedCard_N();
-					findNewSpaceOnTable();
+				//============= Если в направлении движения карты НЕТ другой карты =============
+				if (playerTurn.getCardsOnTable_POWER()[playerTurn.getFocusedCard_N()+i].equals("n")){
+					if (playerTurn.getFocusedCard_N() <= 6 &&
+							checkSpaceOnOtherLine(playerTurn.getFocusedCard_N()+i)) break;			// если карта во втором ряду, а в направлении есть свободное место в первом
+					changeFocusedCardAndMoveSelectedCardOnTable(playerTurn.getFocusedCard_N()+i);	// двигать карту, если ничего не мешает
 					break;
 				}
-					if (playerTurn.getFocusedCard_N() <= 3 && playerTurn.getCardsOnTable_COST()[playerTurn.getFocusedCard_N()] > playerTurn.getMaana()){
-						playerTurn.doRedFlash();
-						break;
-					}
-				if (playerTurn.getFocusedCard_N() >= 4 && 
-						playerTurn.getFocusedCard_N() <= 6 &&
-							possibleToSwitchCards(playerTurn.getFocusedCard_N()+3)) break;
-			} break;
-			
-			case "left": {
-				if (playerTurn.getFocusedCard_N() <= 3){
-						playerTurn.cardToMaana();
-						setFocusAfterAction();
-				}
-				else {
-					if (playerTurn.getFocusedCard_N() >= 7 && possibleToSwitchCards(playerTurn.getFocusedCard_N()-3)) break;
-					changeFocusedCardAndMoveSelectedCardOnTable(startFocusedCard_N);
-					iel.setTextOnLabel(playerTurn.getMaanaPlus_Label(), "+"+playerTurn.getStartCardREFUND());
-				}
-			} break;
-			
-			case " ":{
-				if (playerTurn.getFocusedCard_N() <= 3){
-					playerTurn.setUnselectOnCard();
-				}
-				else {
-					playerTurn.setUnselectOnCard();				
-					playerTurn.setUnfocusOnCard();
-					playerTurn.decreaseMaanaForCard();
-					playerTurn.setActionsDone(playerTurn.getActionsDone()+1);
-					setFocusAfterAction();
-				}
-			} break;
+			}
 		}
-		checkSpaceToFillTableCenter();
 	}
+	
+	public void doMoveUp(){
+		if (playerTurn.getFocusedCard_N() >= 4){
+			for (int i = 1; i <= 2; i++) {
+				//============= Если карта находится НА КРАЮ СТОЛА, то не делать ничего =============
+				if (playerTurn.getFocusedCard_N()-i == 6 || 
+						playerTurn.getFocusedCard_N()-i == 3) break;
+				//============= Если в направлении движения карты ЕСТЬ другая карта =============
+				if (!playerTurn.getCardsOnTable_POWER()[playerTurn.getFocusedCard_N()-i].equals("n")){
+					if (playerTurn.getFocusedCard_N()+i >= 7 && 
+							possibleToMoveCardFromCenter(playerTurn.getFocusedCard_N()-i)) break; 	// если мы в 1 ряду, и карту НУЖНО подвинуть во второй ряд
+					if (checkSpaceOnOtherLine(playerTurn.getFocusedCard_N()-i)) break;		// если двигать карту НЕ НУЖНО, но есть место во втором ряду
+					continue;
+				}
+				//============= Если в направлении движения карты НЕТ другой карты =============
+				if (playerTurn.getCardsOnTable_POWER()[playerTurn.getFocusedCard_N()-i].equals("n")){
+					if (playerTurn.getFocusedCard_N() <= 6 && 
+							checkSpaceOnOtherLine(playerTurn.getFocusedCard_N()-i)) break;			// если карта во втором ряду, а в направлении есть свободное место в первом
+					changeFocusedCardAndMoveSelectedCardOnTable(playerTurn.getFocusedCard_N()-i);	// двигать карту, если ничего не мешает
+					break;
+				}
+			}
+		}
+	}
+	
+	public Boolean doMoveRight(){
+		if (playerTurn.getFocusedCard_N() <= 3 && playerTurn.getCardsOnTable_COST()[playerTurn.getFocusedCard_N()] <= playerTurn.getMaana()){
+			startFocusedCard_N = playerTurn.getFocusedCard_N();
+			findNewSpaceOnTable();
+			return true;
+		}
+			if (playerTurn.getFocusedCard_N() <= 3 && playerTurn.getCardsOnTable_COST()[playerTurn.getFocusedCard_N()] > playerTurn.getMaana()){
+				playerTurn.doRedFlash();
+				return true;
+			}
+		if (playerTurn.getFocusedCard_N() >= 4 && 
+				playerTurn.getFocusedCard_N() <= 6 &&
+					possibleToSwitchCards(playerTurn.getFocusedCard_N()+3));
+		return false;
+	} 
 
+	public Boolean doMoveLeft(){
+		if (playerTurn.getFocusedCard_N() <= 3){
+			playerTurn.cardToMaana();
+			playerTurn.setFocusAfterAction();
+		}
+		else {
+			if (playerTurn.getFocusedCard_N() >= 7 && possibleToSwitchCards(playerTurn.getFocusedCard_N()-3)) return true;
+			changeFocusedCardAndMoveSelectedCardOnTable(startFocusedCard_N);
+			iel.setTextOnLabel(playerTurn.getMaanaPlus_Label(), "+"+playerTurn.getStartCardREFUND());
+		}
+		return false;
+	}
+	
+	public void doMoveSpace(){
+		if (playerTurn.getFocusedCard_N() <= 3){
+			playerTurn.setUnselectOnCard();
+		}
+		else {
+			playerTurn.setUnselectOnCard();				
+			playerTurn.setUnfocusOnCard();
+			playerTurn.decreaseMaanaForCard();
+			playerTurn.setActionsDone(playerTurn.getActionsDone()+1);
+			playerTurn.setFocusAfterAction();
+		}
+	}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////// SECONDARY MOVE BLOCK ////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	private void checkSpaceToFillTableCenter() {
 		int checkPos;
 		for (int i = 0; i <= 2; i++) {
@@ -155,8 +173,7 @@ public class MoveSelectedCards implements Constants, CardsValues {
 		if (!playerTurn.getCardsOnTable_POWER()[focusedCardToCheck].equals("n")){
 			int switchCard_x = card_xy.get(focusedCardToCheck*10+1);
 			int switchCard_y = card_xy.get(focusedCardToCheck*10+2);
-			cardsMovementThr = new CardsMovementThr(table, old_x, old_y, 
-																	switchCard_x+dX, switchCard_y-10);
+			cardsMovementThr = new CardsMovementThr(table, old_x, old_y, switchCard_x+dX, switchCard_y-10);
 			cardsMovementThr.start();
 				cardsMovementThr = new CardsMovementThr(table, switchCard_x, switchCard_y, old_x, old_y);
 				cardsMovementThr.start();
@@ -197,15 +214,6 @@ public class MoveSelectedCards implements Constants, CardsValues {
 		}
 		else return false;
 	}
-
-	public void setFocusAfterAction(){
-		for (int i = 1; i <= 3; i++)
-			if (!playerTurn.getCardsOnTable_POWER()[i].equals("n")){
-				playerTurn.setFocusedCard_N(i);
-				playerTurn.setFocusOnCard();
-				break;
-			}
-	}
 	
 	public void changeFocusedCardAndMoveSelectedCardOnTable(int newFocusedCard){
 			int dX = playerTurn.getSide().equals("left")? 10:-10;
@@ -216,8 +224,8 @@ public class MoveSelectedCards implements Constants, CardsValues {
 			moveCardProperties(newFocusedCard, playerTurn.getStartCardN(), playerTurn.getStartCardPOWER());
 			
 			tests.fillInCardsOnTablePOWERLabel();
-			new_x = card_xy.get(playerTurn.getFocusedCard_N()*10+1)+dX;
-			new_y = card_xy.get(playerTurn.getFocusedCard_N()*10+2)-10;
+			new_x = card_xy.get(newFocusedCard*10+1)+dX;
+			new_y = card_xy.get(newFocusedCard*10+2)-10;
 			cardsMovementThr = new CardsMovementThr(table, old_x, old_y, new_x, new_y);
 			cardsMovementThr.start();
 	}

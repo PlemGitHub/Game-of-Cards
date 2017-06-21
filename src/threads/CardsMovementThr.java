@@ -13,7 +13,7 @@ public class CardsMovementThr extends Thread implements Constants{
 	private int new_y;
 	private int dX;
 	private int dY;
-	private int delay = 100/CARDS_MOVEMENT_SPEED;
+	private int delay = CARDS_MOVEMENT_TIME_MS/CARDS_MOVEMENT_DIV;
 	
 	public CardsMovementThr(Table table, int old_x, int old_y, int new_x, int new_y) {
 		this.table = table;
@@ -21,14 +21,14 @@ public class CardsMovementThr extends Thread implements Constants{
 		this.old_y = old_y;
 		this.new_x = new_x;
 		this.new_y = new_y;
-		dX = (new_x-old_x)/CARDS_MOVEMENT_SPEED;
-		dY = (new_y-old_y)/CARDS_MOVEMENT_SPEED;
+		dX = (new_x-old_x)/CARDS_MOVEMENT_DIV;
+		dY = (new_y-old_y)/CARDS_MOVEMENT_DIV;
 	}
 	
 	@Override
 	public void run(){
 		Component cardToMove = table.findComponentOnMainPanel(old_x+10, old_y);
-			for (int i = 1; i <= CARDS_MOVEMENT_SPEED-1; i++) {
+			for (int i = 1; i <= CARDS_MOVEMENT_DIV-1; i++) {
 				cardToMove.setLocation(cardToMove.getX()+dX, cardToMove.getY()+dY);
 				try {
 					Thread.sleep(delay);
