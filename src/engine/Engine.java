@@ -44,12 +44,12 @@ public class Engine implements Constants, ActionListener {
 	 * Метод отрабатывает кнопку "Новая Игра": очищает поле от карт, перемешивает колоды, 
 	 * 
 	 */
-	public void newGame(){
+	public void newGame(){			
 		playerTurnThread = new PlayerTurnThread(table, this);
 		playerTurn = playerTurnThread.getPlayerTurn();
 		tests = table.getTests();
 		Component componentToRemove;
-		//============= Очистить поле =============
+		//============= Очистить поле селва и справа=============
 		for (int i = 1; i <= 9; i++) {
 			int x = CARD_XY_LEFT.get(i*10+1)+10;
 			int y = CARD_XY_LEFT.get(i*10+2);
@@ -66,13 +66,20 @@ public class Engine implements Constants, ActionListener {
 
 		//============= Очистка отслеживания наличия карт на полях =============
 		for (int i = 1; i <= 9; i++) {
+			cardsOnTable_N_left[i] = 0;
+			cardsOnTable_N_right[i] = 0;
 			cardsOnTable_POWER_left[i] = "n";
 			cardsOnTable_POWER_right[i] = "n";
 			cardsOnTable_REFUND_left[i] = 0;
 			cardsOnTable_REFUND_right[i] = 0;
 			cardsOnTable_COST_left[i] = 0;
 			cardsOnTable_COST_right[i] = 0;
+			cardsOnTable_HEALTH_left[i] = 0;
+			cardsOnTable_HEALTH_right[i] = 0;
+			cardsOnTable_ATTACK_left[i] = 0;
+			cardsOnTable_ATTACK_right[i] = 0;
 		}
+		table.getMsc().setEndCardPos(0);
 
 		//============= Отрисовка начальных значений хп и мааны =============
 		table.getInterfaceElements().getHp_left_Label().setText(Integer.toString(START_HP));

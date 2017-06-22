@@ -52,4 +52,7 @@ public class PlayerTurnThread extends Thread implements Constants{
 	public PlayerTurn getPlayerTurn(){
 		return this.playerTurn;
 	}
+		public FightThr getFightThr(){
+			return fightThr;
+		}
 }

@@ -49,28 +49,29 @@ public class Table implements Constants, KeyListener {
 	public void keyReleased(KeyEvent e) {}
 	public void keyTyped(KeyEvent e) {}
 	public void keyPressed(KeyEvent e) {
+		if (!engine.getPlayerTurnThread().getFightThr().isAlive()){
+			try {
+				playerTurn = engine.getPlayerTurnThread().getPlayerTurn();
+				focusedCard_N = playerTurn.getFocusedCard_N();
+				
+				char c = e.getKeyChar();
+				
+				if (playerTurn.getSide().equals("right") && (c=='a'|c=='A'|c=='ô'|c=='Ô'))
+					c='d';
+				else
+					if (playerTurn.getSide().equals("right") && (c=='d'|c=='D'|c=='â'|c=='Â'))
+						c='a';
+				if (playerTurn.getCardIsSelected())
+					keyPressedWithSelectedCard(c);
+				else
+					keyPressedWithUnselectedCard(c);
+			} catch (NullPointerException e1) {e1.printStackTrace();}
 		
-		try {
-			playerTurn = engine.getPlayerTurnThread().getPlayerTurn();
-			focusedCard_N = playerTurn.getFocusedCard_N();
+			if (e.getKeyChar()==27)
+				System.exit(0);
 			
-			char c = e.getKeyChar();
-			
-			if (playerTurn.getSide().equals("right") && (c=='a'|c=='A'|c=='ô'|c=='Ô'))
-				c='d';
-			else
-				if (playerTurn.getSide().equals("right") && (c=='d'|c=='D'|c=='â'|c=='Â'))
-					c='a';
-			if (playerTurn.getCardIsSelected())
-				keyPressedWithSelectedCard(c);
-			else
-				keyPressedWithUnselectedCard(c);
-		} catch (NullPointerException e1) {e1.printStackTrace();}
-	
-		if (e.getKeyChar()==27)
-			System.exit(0);
-		
-	mainPanel.repaint();
+			mainPanel.repaint();
+		}
 	}
 	
 	private void keyPressedWithSelectedCard (char c){
@@ -196,6 +197,9 @@ public class Table implements Constants, KeyListener {
 			public InterfaceElements getInterfaceElements(){
 				return iel;
 			}
+				public MoveSelectedCards getMsc(){
+					return msc;
+				}
 	
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {

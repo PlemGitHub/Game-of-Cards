@@ -45,7 +45,7 @@ public class InterfaceElements implements Constants{
 		maana_left_img.setOpaque(false);
 		mainPanel.add(maana_left_img);
 			maana_left_Label.setBounds(FIELD_XY_LEFT.get(01)+HP_MAANA_WIDTH+5, DECK_Y+DECK_HEIGTH+40+HP_MAANA_HEIGHT+40, HP_MAANA_WIDTH, HP_MAANA_HEIGHT);
-			maana_left_Label.setFont(new Font("Segoe Script", Font.BOLD, 30));
+//			maana_left_Label.setFont(new Font("Segoe Script", Font.BOLD, 30));
 			maana_left_Label.setForeground(Color.BLUE);
 			maana_left_Label.setHorizontalAlignment(SwingConstants.RIGHT);
 			mainPanel.add(maana_left_Label);
@@ -72,17 +72,17 @@ public class InterfaceElements implements Constants{
 	private void setUpHpSigns() {	// x = колода, HP_SIGN_WIDTH, промежуток 5,  HP_SIGN_WIDTH
 		hp_left_img.setBounds(FIELD_XY_LEFT.get(01), DECK_Y+DECK_HEIGTH+40, HP_MAANA_WIDTH, HP_MAANA_HEIGHT);
 		hp_left_img.setOpaque(false);
-		mainPanel.add(hp_left_img);		
-			hp_left_Lable.setBounds(FIELD_XY_LEFT.get(01)+HP_MAANA_WIDTH+5, DECK_Y+DECK_HEIGTH+40, HP_MAANA_WIDTH, HP_MAANA_HEIGHT);
+		mainPanel.add(hp_left_img);
+			hp_left_Lable.setBounds(FIELD_XY_LEFT.get(01)+HP_MAANA_WIDTH+5, DECK_Y+DECK_HEIGTH+40, HP_MAANA_WIDTH+30, HP_MAANA_HEIGHT);
 			hp_left_Lable.setFont(new Font("Segoe Script", Font.BOLD, 33));
 			hp_left_Lable.setForeground(Color.RED);
-			hp_left_Lable.setHorizontalAlignment(SwingConstants.RIGHT);
+			hp_left_Lable.setHorizontalAlignment(SwingConstants.LEFT);
 			mainPanel.add(hp_left_Lable);
 		
 		hp_right_img.setBounds(FIELD_XY_RIGHT.get(01)+FIELD_WIDTH-HP_MAANA_WIDTH, DECK_Y+DECK_HEIGTH+40, HP_MAANA_WIDTH, HP_MAANA_HEIGHT);
 		hp_right_img.setOpaque(false);
 		mainPanel.add(hp_right_img);		
-			hp_right_Lable.setBounds(FIELD_XY_RIGHT.get(01)+FIELD_WIDTH-HP_MAANA_WIDTH*2-5, DECK_Y+DECK_HEIGTH+40, HP_MAANA_WIDTH, HP_MAANA_HEIGHT);
+			hp_right_Lable.setBounds(FIELD_XY_RIGHT.get(01)+FIELD_WIDTH-HP_MAANA_WIDTH*2-5, DECK_Y+DECK_HEIGTH+40, HP_MAANA_WIDTH+30, HP_MAANA_HEIGHT);
 			hp_right_Lable.setFont(new Font("Segoe Script", Font.BOLD, 33));
 			hp_right_Lable.setForeground(Color.RED);
 			mainPanel.add(hp_right_Lable);
