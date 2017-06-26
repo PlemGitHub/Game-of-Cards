@@ -89,7 +89,6 @@ public class MoveSelectedCards implements Constants, CardsValues {
 				if (!playerTurn.getCardsOnTable_POWER()[playerTurn.getFocusedCard_N()-i].equals("n")){
 					if (playerTurn.getFocusedCard_N()+i >= 7 && 
 							possibleToMoveCardFromCenter(playerTurn.getFocusedCard_N()-i)) break; 	// если мы в 1 ряду, и карту НУЖНО подвинуть во второй ряд
-//					if (checkSpaceOnOtherLine(playerTurn.getFocusedCard_N()-i)) break;		// если двигать карту НЕ НУЖНО, но есть место во втором ряду
 					continue;
 				}
 				//============= Если в направлении движения карты НЕТ другой карты =============
@@ -147,7 +146,7 @@ public class MoveSelectedCards implements Constants, CardsValues {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////// SECONDARY MOVE BLOCK ////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	private void checkSpaceToFillTableCenter() {
+	public void checkSpaceToFillTableCenter() {
 		for (int i = 0; i <= 2; i++) {
 			int checkPos = 7+i; // проверка позиций 7, 8 и 9
 			if (playerTurn.getCardsOnTable_POWER()[checkPos].equals("n") && 
@@ -228,7 +227,7 @@ public class MoveSelectedCards implements Constants, CardsValues {
 		else return false;
 	}
 	
-	public void changeFocusedCardAndMoveSelectedCardOnTable(int newFocusedCard){
+	private void changeFocusedCardAndMoveSelectedCardOnTable(int newFocusedCard){
 			int dX = playerTurn.getSide().equals("left")? 10:-10;
 			clearCardProperties(playerTurn.getFocusedCard_N());
 			
@@ -251,19 +250,17 @@ public class MoveSelectedCards implements Constants, CardsValues {
 			for (int i = 2; i>=1; i--)
 				for (int k = 1; k<=3; k++)
 					if (!playerTurn.getCardsOnTable_POWER()[i*3+k].equals("n")) continue;
-						else {
-							changeFocusedCardAndMoveSelectedCardOnTable(i*3+k);
-								i=0; // чтобы выйти из внешнего цикла
-								break;
-						}
-		else
-		{
+					else {
+						changeFocusedCardAndMoveSelectedCardOnTable(i*3+k);
+							i=0; // чтобы выйти из внешнего цикла
+							break;
+					}
+		else{
 			changeFocusedCardAndMoveSelectedCardOnTable(endCardPos);
 			endCardPos=0;
-			}
-
-		JLabel maanaPlus = playerTurn.getSide().equals("left")? iel.getMaanaPlus_left_Label():iel.getMaanaPlus_right_Label();
-		maanaPlus.setText("-"+Integer.toString(playerTurn.getStartCardCOST()));
+		}
+		
+		playerTurn.getMaanaPlus_Label().setText("-"+Integer.toString(playerTurn.getStartCardCOST()));
 	}
 	/**
 	 * Перемещает свойства карты "по полю". 

@@ -202,11 +202,31 @@ public class PlayerTurn implements Constants, CardsValues{
 	public String[] getCardsOnTable_POWER(){
 		return cardsOnTable_POWER;
 	}
+	public void setEnemyCardsOnTable_POWER(int i, String n){
+		String[] cards = cardsOnTable_POWER==engine.getCardsOnTable_POWER_left()? 
+						engine.getCardsOnTable_POWER_right() : engine.getCardsOnTable_POWER_left();
+		cards[i] = n;
+	}	
+	public String[] getEnemyCardsOnTable_POWER(){
+		String[] cards = cardsOnTable_POWER==engine.getCardsOnTable_POWER_left()? 
+				engine.getCardsOnTable_POWER_right() : engine.getCardsOnTable_POWER_left();
+		return cards;
+	}
 		public void setCardsOnTable_N(int i, int n){
 			cardsOnTable_N[i] = n;
 		}	
 		public int[] getCardsOnTable_N(){
 			return cardsOnTable_N;
+		}
+		public void setEnemyCardsOnTable_N(int i, int n){
+			int[] cards = cardsOnTable_N==engine.getCardsOnTable_N_left()? 
+							engine.getCardsOnTable_N_right() : engine.getCardsOnTable_N_left();
+			cards[i] = n;
+		}	
+		public int[] getEnemyCardsOnTable_N(){
+			int[] cards = cardsOnTable_N==engine.getCardsOnTable_N_left()? 
+					engine.getCardsOnTable_N_right() : engine.getCardsOnTable_N_left();
+			return cards;
 		}
 			public void setCardsOnTable_HEALTH(int i, int n){
 				cardsOnTable_HEALTH[i] = n;
@@ -214,11 +234,31 @@ public class PlayerTurn implements Constants, CardsValues{
 			public int[] getCardsOnTable_HEALTH(){
 				return cardsOnTable_HEALTH;
 			}
+			public void setEnemyCardsOnTable_HEALTH(int i, int n){
+				int[] cards = cardsOnTable_HEALTH==engine.getCardsOnTable_HEALTH_left()? 
+								engine.getCardsOnTable_HEALTH_right() : engine.getCardsOnTable_HEALTH_left();
+				cards[i] = n;
+			}	
+			public int[] getEnemyCardsOnTable_HEALTH(){
+				int[] cards = cardsOnTable_HEALTH==engine.getCardsOnTable_HEALTH_left()? 
+						engine.getCardsOnTable_HEALTH_right() : engine.getCardsOnTable_HEALTH_left();
+				return cards;
+			}
 				public void setCardsOnTable_ATTACK(int i, int n){
 					cardsOnTable_ATTACK[i] = n;
 				}	
 				public int[] getCardsOnTable_ATTACK(){
 					return cardsOnTable_ATTACK;
+				}
+				public void setEnemyCardsOnTable_ATTACK(int i, int n){
+					int[] cards = cardsOnTable_ATTACK==engine.getCardsOnTable_ATTACK_left()? 
+									engine.getCardsOnTable_ATTACK_right() : engine.getCardsOnTable_ATTACK_left();
+					cards[i] = n;
+				}	
+				public int[] getEnemyCardsOnTable_ATTACK(){
+					int[] cards = cardsOnTable_ATTACK==engine.getCardsOnTable_ATTACK_left()? 
+							engine.getCardsOnTable_ATTACK_right() : engine.getCardsOnTable_ATTACK_left();
+					return cards;
 				}
 	public int getStartCardN(){
 		return startCardN;
@@ -290,6 +330,12 @@ public class PlayerTurn implements Constants, CardsValues{
 		public int getHpEnemy(){
 			return hpEnemy;
 		}
+			public void setHpLeft(int hp_left){
+				this.hp_left = hp_left;
+			}
+				public void setHpRight(int hp_right){
+					this.hp_right = hp_right;
+				}
 	public JLabel getHpEnemy_Label(){
 		return hpEnemy_Label;
 	}

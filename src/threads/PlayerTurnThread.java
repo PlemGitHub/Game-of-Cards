@@ -25,11 +25,13 @@ public class PlayerTurnThread extends Thread implements Constants{
 			playerTurn.Turn("left", engine.getDeckInNumbers_left());
 			checkThreads();
 			playerTurn.setMaana_left(playerTurn.getMaana());
+			playerTurn.setHpRight(playerTurn.getHpEnemy());
 
 			//============= ÕÎÄ ÂÒÎĞÎÃÎ ÈÃĞÎÊÀ =============
 			playerTurn.Turn("right", engine.getDeckInNumbers_right());
-			playerTurn.setMaana_right(playerTurn.getMaana());
 			checkThreads();
+			playerTurn.setMaana_right(playerTurn.getMaana());
+			playerTurn.setHpLeft(playerTurn.getHpEnemy());
 		
 		} while (true);
 	}
