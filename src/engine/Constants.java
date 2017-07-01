@@ -5,12 +5,13 @@ import java.util.HashMap;
 
 public interface Constants {
 	public int N_OF_CARDS = 10;
-	public int START_HP = 20;
-	public int START_MAANA = 30;
+	public int START_HP = 30;
+	public int START_MAANA = 0;
 	public int BIG_FONT_SIZE = 34;
 	public int NORMAL_FONT_SIZE = 30;
 	public int CARDS_MOVEMENT_TIME_MS = 100;
 	public int CARDS_MOVEMENT_DIV = 15;
+	public int CARDS_SHIFT_DELAY = 25;
 	public int dA = 5; //коэффициент для скругления углов обводки
 	public int dXY = 7; //смещение для отрисовки обводки карт
 	public int dXY2 = 2*dXY;
@@ -34,16 +35,16 @@ public interface Constants {
 	public int FIELD_TO_DECK_HEIGHT = (FIELD_HEIGHT-DECK_HEIGTH)/2; // переход от Обводки к Колоде
 	public int FIELD_TO_CARD_XY = dXY; 							// переход от Обводки к Карте
 	public int F_dXY2 = FIELD_WIDTH + dXY2; 						// Обводка + промежуток между ними
-		
+
+	public int X_LEFT_0 = MIDDLE_X - 4*(F_dXY2);	// колода
 	public int X_LEFT_1 = MIDDLE_X - 3*(F_dXY2); 	// розыгрыш первого игрока	
 	public int X_LEFT_2 = MIDDLE_X - 2*(F_dXY2);	// задний ряд
 	public int X_LEFT_3 = MIDDLE_X - (F_dXY2);		// передний ряд
-	public int X_LEFT_0 = MIDDLE_X - 4*(F_dXY2);	// колода
-	
+
+	public int X_RIGHT_0 = MIDDLE_X + dXY2 + 3*(F_dXY2);	// колода
 	public int X_RIGHT_1 = MIDDLE_X + dXY2 + 2*(F_dXY2);	// розыгрыш второго игрока						
 	public int X_RIGHT_2 = MIDDLE_X + dXY2 + (F_dXY2);		// задний ряд
 	public int X_RIGHT_3 = MIDDLE_X + dXY2; 				// передний ряд
-	public int X_RIGHT_0 = MIDDLE_X + dXY2 + 3*(F_dXY2);	// колода
 	
 	public int Y1 = MIDDLE_Y-FIELD_HEIGHT*3/2-dXY2;		// Y первого ряда
 	public int Y2 = MIDDLE_Y-FIELD_HEIGHT/2;				// Y второго ряда
@@ -118,4 +119,8 @@ public interface Constants {
 		public int DECK_X_LEFT = X_LEFT_0 + FIELD_TO_DECK_WIDTH;	// Х колоды левого игрока
 		public int DECK_X_RIGHT = X_RIGHT_0 + FIELD_TO_DECK_WIDTH;	// Х колоды правого игрока
 		public int DECK_Y = Y1 + FIELD_TO_DECK_HEIGHT;				// верхний край колоды
-	}
+		
+		public int CARD_TO_NOTHING_X_LEFT = -300-CARD_WIDTH;
+		public int CARD_TO_NOTHING_X_RIGHT = DISPLAY_RESOLUTION_X+300;
+		public int CARD_TO_NOTHING_Y = Y2;
+}

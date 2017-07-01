@@ -41,7 +41,6 @@ public class Table implements Constants, KeyListener {
 		mainFrame.setExtendedState(Frame.MAXIMIZED_BOTH);
 		mainFrame.setVisible(true);	
 
-		mainFrame.addKeyListener(this);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			newGameButton.doClick();
 	}
@@ -49,7 +48,7 @@ public class Table implements Constants, KeyListener {
 	public void keyReleased(KeyEvent e) {}
 	public void keyTyped(KeyEvent e) {}
 	public void keyPressed(KeyEvent e) {
-		if (!engine.getPlayerTurnThread().getFightThr().isAlive()){
+		if (!msc.getCardsMovementThr().isAlive())
 			try {
 				playerTurn = engine.getPlayerTurnThread().getPlayerTurn();
 				focusedCard_N = playerTurn.getFocusedCard_N();
@@ -71,7 +70,7 @@ public class Table implements Constants, KeyListener {
 				System.exit(0);
 			
 			mainPanel.repaint();
-		}
+		
 	}
 	
 	private void keyPressedWithSelectedCard (char c){
@@ -177,10 +176,10 @@ public class Table implements Constants, KeyListener {
 				Component component = mainPanel.findComponentAt(x,y);
 				return component;
 			}
-				public void moveCardOnTable(int old_x, int old_y, int new_x, int new_y){
-					mainPanel.findComponentAt(old_x+10, old_y).setLocation(new_x, new_y);
-				}
 			
+	public JFrame getMainFrame(){
+		return mainFrame;
+	}
 	public JPanel getMainPanel(){
 		return mainPanel;
 	}

@@ -8,7 +8,7 @@ public interface CardsValues {
 		{
 			put(1, "r"); put(2, "h"); put(3, "y"); put(4, "a"); put(5, "y");
 			put(6, "s"); put(7, "y"); put(8, "r"); put(9, "a"); put(10, "m");				
-				}};		
+				}};
 				
 	public HashMap<Integer, Integer> REFUND = new HashMap<Integer,Integer>(){
 		private static final long serialVersionUID = 1L;

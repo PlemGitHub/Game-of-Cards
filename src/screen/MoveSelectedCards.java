@@ -1,7 +1,6 @@
 package screen;
 
 import java.util.HashMap;
-import javax.swing.JLabel;
 import TESTS.Tests;
 import engine.CardsValues;
 import engine.Constants;
@@ -22,7 +21,7 @@ public class MoveSelectedCards implements Constants, CardsValues {
 	private int old_y;
 	private int new_x;
 	private int new_y;
-	private CardsMovementThr cardsMovementThr = new CardsMovementThr(table, old_x, old_y, new_x, new_y);
+	private CardsMovementThr cardsMovementThr = new CardsMovementThr(table, old_x, old_y, new_x, new_y, 0);
 	
 	public MoveSelectedCards(Table table, Engine engine, InterfaceElements iel) {
 		this.table = table;
@@ -33,7 +32,6 @@ public class MoveSelectedCards implements Constants, CardsValues {
 //////////////////////////////////////////////////// MOVE CARD BLOCK /////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void moveCard(String dir){
-		if (!cardsMovementThr.isAlive() || !engine.getPlayerTurnThread().getFightThr().isAlive()){
 			playerTurn = engine.getPlayerTurnThread().getPlayerTurn();
 			tests = table.getTests();
 			card_xy = playerTurn.getMy_XY();
@@ -51,7 +49,6 @@ public class MoveSelectedCards implements Constants, CardsValues {
 				case " ": doMoveSpace(); break;
 			}
 			checkSpaceToFillTableCenter();
-		}
 	}
 	
 	public void doMoveDown(){
@@ -159,7 +156,7 @@ public class MoveSelectedCards implements Constants, CardsValues {
 					cardsMovementThr = new CardsMovementThr(table, card_xy.get((checkPos-3)*10+1), 
 																	card_xy.get((checkPos-3)*10+2), 
 																card_xy.get(checkPos*10+1), 
-															card_xy.get(checkPos*10+2));
+															card_xy.get(checkPos*10+2), 0);
 					cardsMovementThr.start();
 					moveCardProperties(checkPos, N , power, hp, attack);
 					clearCardProperties(checkPos-3);
@@ -173,9 +170,9 @@ public class MoveSelectedCards implements Constants, CardsValues {
 			int dX = playerTurn.getSide().equals("left")? 10 : -10;
 			int switchCard_x = card_xy.get(focusedCardToSwitchWith*10+1);
 			int switchCard_y = card_xy.get(focusedCardToSwitchWith*10+2);
-			cardsMovementThr = new CardsMovementThr(table, old_x, old_y, switchCard_x+dX, switchCard_y-10);
+			cardsMovementThr = new CardsMovementThr(table, old_x, old_y, switchCard_x+dX, switchCard_y-10, 0);
 			cardsMovementThr.start();
-				cardsMovementThr = new CardsMovementThr(table, switchCard_x, switchCard_y, old_x, old_y);
+				cardsMovementThr = new CardsMovementThr(table, switchCard_x, switchCard_y, old_x, old_y, 0);
 				cardsMovementThr.start();
 
 			int N = playerTurn.getCardsOnTable_N()[focusedCardToSwitchWith];
@@ -205,7 +202,7 @@ public class MoveSelectedCards implements Constants, CardsValues {
 				cardsMovementThr = new CardsMovementThr(table, card_xy.get(focusedCardToSwitch_old*10+1),
 																	card_xy.get(focusedCardToSwitch_old*10+2), 
 																card_xy.get(focusedCardToSwitch_new*10+1),
-															card_xy.get(focusedCardToSwitch_new*10+2));
+															card_xy.get(focusedCardToSwitch_new*10+2), 0);
 				cardsMovementThr.start();
 					int N = playerTurn.getCardsOnTable_N()[focusedCardToSwitch_old];
 					String power = playerTurn.getCardsOnTable_POWER()[focusedCardToSwitch_old];
@@ -240,7 +237,7 @@ public class MoveSelectedCards implements Constants, CardsValues {
 			tests.fillInCardsOnTablePOWERLabel();
 			new_x = card_xy.get(newFocusedCard*10+1)+dX;
 			new_y = card_xy.get(newFocusedCard*10+2)-10;
-			cardsMovementThr = new CardsMovementThr(table, old_x, old_y, new_x, new_y);
+			cardsMovementThr = new CardsMovementThr(table, old_x, old_y, new_x, new_y, 0);
 			cardsMovementThr.start();
 	}
 	
@@ -282,6 +279,10 @@ public class MoveSelectedCards implements Constants, CardsValues {
 			playerTurn.setCardsOnTable_ATTACK(pos, 0);
 		}
 	
+	public CardsMovementThr getCardsMovementThr(){
+		return cardsMovementThr;
+	}
+		
 	public void setEngine(Engine engine){
 		this.engine = engine;
 	}

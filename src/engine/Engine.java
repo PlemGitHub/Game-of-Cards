@@ -18,6 +18,8 @@ public class Engine implements Constants, ActionListener {
 	private PlayerTurnThread playerTurnThread;
 	private ArrayList<Integer> deckInNumbers_left = new ArrayList<>();	// колода 1 игрока в цифрах
 	private ArrayList<Integer> deckInNumbers_right = new ArrayList<>();	// колода 2 игрока в цифрах
+	private ArrayList<Integer> discardPile_left = new ArrayList<>();	// колода 2 игрока в цифрах
+	private ArrayList<Integer> discardPile_right = new ArrayList<>();	// колода 2 игрока в цифрах 
 	private int[] cardsOnTable_N_left = new int[10];
 	private int[] cardsOnTable_N_right = new int[10];
 		private String[] cardsOnTable_POWER_left = new String[10];
@@ -80,6 +82,7 @@ public class Engine implements Constants, ActionListener {
 			cardsOnTable_ATTACK_right[i] = 0;
 		}
 		table.getMsc().setEndCardPos(0);
+		table.getMainFrame().removeKeyListener(table);
 
 		//============= Отрисовка начальных значений хп и мааны =============
 		table.getInterfaceElements().getHp_left_Label().setText(Integer.toString(START_HP));
@@ -126,6 +129,12 @@ public class Engine implements Constants, ActionListener {
 	}
 		public ArrayList<Integer> getDeckInNumbers_right(){
 			return deckInNumbers_right;
+		}
+	public ArrayList<Integer> getDiscardPile_left(){
+		return discardPile_left;
+	}
+		public ArrayList<Integer> getDiscardPile_right(){
+			return discardPile_right;
 		}
 		
 	public int[] getCardsOnTable_N_left(){

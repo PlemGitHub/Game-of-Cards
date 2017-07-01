@@ -2,7 +2,6 @@ package screen;
 
 import java.awt.Color;
 import java.awt.Font;
-
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -45,7 +44,6 @@ public class InterfaceElements implements Constants{
 		maana_left_img.setOpaque(false);
 		mainPanel.add(maana_left_img);
 			maana_left_Label.setBounds(FIELD_XY_LEFT.get(01)+HP_MAANA_WIDTH+5, DECK_Y+DECK_HEIGTH+40+HP_MAANA_HEIGHT+40, HP_MAANA_WIDTH, HP_MAANA_HEIGHT);
-//			maana_left_Label.setFont(new Font("Segoe Script", Font.BOLD, 30));
 			maana_left_Label.setForeground(Color.BLUE);
 			maana_left_Label.setHorizontalAlignment(SwingConstants.RIGHT);
 			mainPanel.add(maana_left_Label);
@@ -118,7 +116,7 @@ public class InterfaceElements implements Constants{
 				public JLabel getMaanaPlus_right_Label(){
 					return maanaPlus_right_Label;
 				}
-	
+
 	public void setTextOnLabel(JLabel label, String str){
 		label.setText(str);
 	}

@@ -23,10 +23,10 @@ public class Tests implements Constants{
 		focusedCardLabel.setBounds(50, 50, 200, 20);
 		cardsOnTablePOWERLabel.setBounds(300, 50, 200, 20);
 		
-		table.getMainPanel().add(leftCardsLabel);
-		table.getMainPanel().add(rightCardsLabel);
-		table.getMainPanel().add(focusedCardLabel);
-		table.getMainPanel().add(cardsOnTablePOWERLabel);
+//		table.getMainPanel().add(leftCardsLabel);
+//		table.getMainPanel().add(rightCardsLabel);
+//		table.getMainPanel().add(focusedCardLabel);
+//		table.getMainPanel().add(cardsOnTablePOWERLabel);
 	}
 		
 	public JLabel getLeftTEST(){
