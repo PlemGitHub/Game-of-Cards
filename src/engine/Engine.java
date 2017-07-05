@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.JButton;
 import TESTS.Tests;
+import screen.HelpScreen;
 import screen.Table;
 import threads.PlayerTurnThread;
 
@@ -16,6 +17,7 @@ public class Engine implements Constants, ActionListener {
 	private PlayerTurn playerTurn;
 	private Tests tests;
 	private PlayerTurnThread playerTurnThread;
+	private HelpScreen hs;
 	private ArrayList<Integer> deckInNumbers_left = new ArrayList<>();	// колода 1 игрока в цифрах
 	private ArrayList<Integer> deckInNumbers_right = new ArrayList<>();	// колода 2 игрока в цифрах
 	private ArrayList<Integer> discardPile_left = new ArrayList<>();	// колода 2 игрока в цифрах
@@ -35,11 +37,18 @@ public class Engine implements Constants, ActionListener {
 	
 	public Engine(Table table) {
 		this.table = table;
+		hs = new HelpScreen(table, this);
 	}
 	
 	public void actionPerformed(ActionEvent e) {
 		if ((JButton)e.getSource() == table.getNewGameButton())
 			newGame();
+		
+		if ((JButton)e.getSource() == table.getHelpButton())
+			hs.showHelpScreen();
+		
+		if ((JButton)e.getSource() == hs.getCloseHelpButton())
+			hs.closeHelpScreen();
 	}
 	
 	/**
@@ -86,7 +95,7 @@ public class Engine implements Constants, ActionListener {
 
 		//============= Отрисовка начальных значений хп и мааны =============
 		table.getInterfaceElements().getHp_left_Label().setText(Integer.toString(START_HP));
-		table.getInterfaceElements().getHp_right_Label().setText(Integer.toString(START_HP));
+		table.getInterfaceElements().getHp_right_Label().setText(Integer.toString(START_HP+10));
 		table.getInterfaceElements().getMaana_right_Label().setText(Integer.toString(START_MAANA));
 		table.getInterfaceElements().getMaanaPlus_right_Label().setText("");
 		
@@ -177,4 +186,8 @@ public class Engine implements Constants, ActionListener {
 	public PlayerTurnThread getPlayerTurnThread(){
 		return playerTurnThread;
 	}	
+	
+	public HelpScreen getHelpScreen(){
+		return hs;
+	}
 }

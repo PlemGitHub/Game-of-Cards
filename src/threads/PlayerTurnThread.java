@@ -1,6 +1,9 @@
 package threads;
 
 import java.awt.Component;
+
+import javax.swing.JOptionPane;
+
 import engine.Constants;
 import engine.Engine;
 import engine.PlayerTurn;
@@ -12,6 +15,7 @@ public class PlayerTurnThread extends Thread implements Constants{
 	private Engine engine;
 	private Table table;
 	private FightThr fightThr = new FightThr(table, playerTurn);
+	private boolean noWinner=true;
 	
 	public PlayerTurnThread(Table table, Engine engine) {
 		this.engine = engine;
@@ -21,6 +25,8 @@ public class PlayerTurnThread extends Thread implements Constants{
 	
 	@Override
 	public void run() {
+		table.getLogger().logNewGameStarted();
+		table.getLogger().logSetFocusOnCard(1);
 		do{
 			//============= ХОД ПЕРВОГО ИГРОКА =============
 			table.getMainFrame().addKeyListener(table);
@@ -30,6 +36,7 @@ public class PlayerTurnThread extends Thread implements Constants{
 			playerTurn.setMaana_left(playerTurn.getMaana());
 			playerTurn.setHpLeft(playerTurn.getHpMy());
 			playerTurn.setHpRight(playerTurn.getHpEnemy());
+			if (checkPlayersHpToFindWinner()) break;
 
 			//============= ХОД ВТОРОГО ИГРОКА =============
 			table.getMainFrame().addKeyListener(table);
@@ -38,10 +45,33 @@ public class PlayerTurnThread extends Thread implements Constants{
 			playerTurn.setMaana_right(playerTurn.getMaana());
 			playerTurn.setHpRight(playerTurn.getHpMy());
 			playerTurn.setHpLeft(playerTurn.getHpEnemy());
+			checkPlayersHpToFindWinner();
 		
-		} while (true);
+		} while (noWinner);
 	}
 	
+	private boolean checkPlayersHpToFindWinner() {
+		if (playerTurn.getHpLeft()>0 && playerTurn.getHpRight()<=0)
+			return showWinner("Победил первый игрок! Начать новую игру?");
+		if (playerTurn.getHpLeft()<=0 && playerTurn.getHpRight()>0)
+			return showWinner("Победил второй игрок! Начать новую игру?");
+		if (playerTurn.getHpLeft()<=0 && playerTurn.getHpRight()<=0)
+			return showWinner("Ничья! Начать новую игру?");
+		return false;
+	}
+
+	private boolean showWinner(String str) {
+		int result = JOptionPane.showConfirmDialog(table.getMainFrame(), str, "Конец игры!", JOptionPane.YES_NO_OPTION);
+		switch (result) {
+		case JOptionPane.YES_OPTION:
+			engine.newGame(); 
+			break;
+		case JOptionPane.NO_OPTION:
+			table.windowClosing(null);
+		}
+		return true;
+	}
+
 	public void checkThreads(){
 		while (playerTurn.getActionsDone() != playerTurn.getCardsToBeDrawn())
 			Thread.yield();

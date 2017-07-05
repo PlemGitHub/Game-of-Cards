@@ -5,7 +5,6 @@ import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-
 import engine.Constants;
 import engine.Engine;
 import panels.ImageImport;
@@ -34,7 +33,7 @@ public class InterfaceElements implements Constants{
 		
 		mainPanel = table.getMainPanel();
 		
-		setUpDecksAndButton();
+		setUpDecksAndButtons();
 		setUpHpSigns();
 		setUpMaanaSigns();
 	}
@@ -86,7 +85,7 @@ public class InterfaceElements implements Constants{
 			mainPanel.add(hp_right_Lable);
 	}
 
-	private void setUpDecksAndButton() {
+	private void setUpDecksAndButtons() {
 		deckCard_left.setBounds(DECK_X_LEFT, DECK_Y, DECK_WIDTH, DECK_HEIGTH);
 		deckCard_right.setBounds(DECK_X_RIGHT, DECK_Y, DECK_WIDTH, DECK_HEIGTH);
 		mainPanel.add(deckCard_left);
@@ -95,6 +94,10 @@ public class InterfaceElements implements Constants{
 			table.getNewGameButton().setFocusable(false);
 			table.getNewGameButton().addActionListener(engine);
 			mainPanel.add(table.getNewGameButton());
+		table.getHelpButton().setBounds(DISPLAY_RESOLUTION_X-150, 0, 100, 50);
+		table.getHelpButton().setFocusable(false);
+		table.getHelpButton().addActionListener(engine);
+		mainPanel.add(table.getHelpButton());
 	}
 	
 	public JLabel getHp_left_Label(){

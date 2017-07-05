@@ -47,7 +47,7 @@ public class PlayerTurn implements Constants, CardsValues{
 	private JLabel hpMy_Label;
 	private JLabel hpEnemy_Label;
 	private int hp_left = START_HP;
-	private int hp_right = START_HP;
+	private int hp_right = START_HP+10;
 	private int maana;
 	private int maana_left = START_MAANA;
 	private int maana_right = START_MAANA;
@@ -143,7 +143,6 @@ public class PlayerTurn implements Constants, CardsValues{
 		int y = my_XY.get(focusedCard_N*10+2);
 		int dX = side.equals("left")? 10: -10;
 			Component selectedCard = table.findComponentOnMainPanel(x+10, y);
-//			if (selectedCard != table.getMainPanel())
 				selectedCard.setLocation(selectedCard.getX()-dX, selectedCard.getY());
 	}
 		public void setFocusOnCard(){
@@ -159,6 +158,7 @@ public class PlayerTurn implements Constants, CardsValues{
 					if (!cardsOnTable_POWER[i].equals("n")){
 						setFocusedCard_N(i);
 						setFocusOnCard();
+						table.getLogger().logSetFocusOnCard(i);
 						break;
 					}
 			}
@@ -169,16 +169,17 @@ public class PlayerTurn implements Constants, CardsValues{
 		int x = my_XY.get(focusedCard_N*10+1);
 		int y = my_XY.get(focusedCard_N*10+2);
 			Component selectedCardPanel = table.findComponentOnMainPanel(x+10, y);
-			if (selectedCardPanel != table.getMainPanel()){
-				selectedCardPanel.setLocation(selectedCardPanel.getX(), selectedCardPanel.getY()-10);
-				cardIsSelected = true;
-				startCardN = cardsOnTable_N[focusedCard_N];
-				startCardPOWER = cardsOnTable_POWER[focusedCard_N];
-				startCardCOST = cardsOnTable_COST[focusedCard_N];
-				startCardREFUND = cardsOnTable_REFUND[focusedCard_N];
-				startCardHealth = cardsOnTable_HEALTH[focusedCard_N];
-				startCardAttack = cardsOnTable_ATTACK[focusedCard_N];
-			}
+//			if (selectedCardPanel != table.getMainPanel()){
+			selectedCardPanel.setLocation(selectedCardPanel.getX(), selectedCardPanel.getY()-10);
+		cardIsSelected = true;
+		startCardN = cardsOnTable_N[focusedCard_N];
+		startCardPOWER = cardsOnTable_POWER[focusedCard_N];
+		startCardCOST = cardsOnTable_COST[focusedCard_N];
+		startCardREFUND = cardsOnTable_REFUND[focusedCard_N];
+		startCardHealth = cardsOnTable_HEALTH[focusedCard_N];
+		startCardAttack = cardsOnTable_ATTACK[focusedCard_N];
+			table.getLogger().logSelectOnCard(startCardN);
+//			}
 	}
 	public void setUnselectOnCard(){
 		int x = my_XY.get(focusedCard_N*10+1);
@@ -186,6 +187,7 @@ public class PlayerTurn implements Constants, CardsValues{
 			Component selectedCardPanel = table.findComponentOnMainPanel(x+10, y);
 				selectedCardPanel.setLocation(selectedCardPanel.getX(), selectedCardPanel.getY()+10);
 				cardIsSelected = false;
+		table.getLogger().logSetUnselectOnCard(startCardN);
 	}
 	
 	public void cardToMaana(){
@@ -206,7 +208,8 @@ public class PlayerTurn implements Constants, CardsValues{
 		discardPile.add(n_to_DiscardPile, cardsOnTable_N[focusedCard_N]);
 		
 		tests.fillInCardsOnTablePOWERLabel();
-		maana += cardsOnTable_REFUND[focusedCard_N];
+		int refund = cardsOnTable_REFUND[focusedCard_N];
+		maana += refund;
 		iel.setTextOnLabel(maana_Label, Integer.toString(maana));
 		doGreenFlash();
 		actionsDone++;
@@ -217,6 +220,7 @@ public class PlayerTurn implements Constants, CardsValues{
 			cardsOnTable_N[focusedCard_N]=0;
 			cardsOnTable_COST[focusedCard_N]=0;
 			cardsOnTable_REFUND[focusedCard_N]=0;
+		table.getLogger().logCardToMaana(focusedCard_N, startCardN, refund, maana);
 	}
 	
 	public void clearMaanaPlus_Label(){
@@ -373,9 +377,15 @@ public class PlayerTurn implements Constants, CardsValues{
 		public int getHpEnemy(){
 			return hpEnemy;
 		}
+			public int getHpLeft(){
+				return hp_left;
+			}
 			public void setHpLeft(int hp_left){
 				this.hp_left = hp_left;
 			}
+				public int getHpRight(){
+					return hp_right;
+				}
 				public void setHpRight(int hp_right){
 					this.hp_right = hp_right;
 				}

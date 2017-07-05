@@ -62,7 +62,6 @@ public class MoveSelectedCards implements Constants, CardsValues {
 				if (!playerTurn.getCardsOnTable_POWER()[playerTurn.getFocusedCard_N()+i].equals("n")){
 					if (playerTurn.getFocusedCard_N()+i >= 7 && 
 							possibleToMoveCardFromCenter(playerTurn.getFocusedCard_N()+i)) break; 	// если мы в 1 ряду, и карту НУЖНО подвинуть во второй ряд
-//					if (checkSpaceOnOtherLine(playerTurn.getFocusedCard_N()+i)) break;		// если двигать карту НЕ НУЖНО, но есть место во втором ряду
 					continue;
 				}
 				//============= Если в направлении движения карты НЕТ другой карты =============
@@ -100,14 +99,21 @@ public class MoveSelectedCards implements Constants, CardsValues {
 	}
 	
 	public Boolean doMoveRight(){
-		if (playerTurn.getFocusedCard_N() <= 3 && playerTurn.getCardsOnTable_COST()[playerTurn.getFocusedCard_N()] <= playerTurn.getMaana()){
+		int fc = playerTurn.getFocusedCard_N();
+		//============= Если хватает мааны на стартовой позиции - поставить на свободное место =============
+		if (fc <= 3 && playerTurn.getCardsOnTable_COST()[fc] <= playerTurn.getMaana()){
 			findNewSpaceOnTable();
+			fc = playerTurn.getFocusedCard_N();
+			table.getLogger().logMoveCard(playerTurn.getStartCardN(), startCardsPos, fc);
 			return true;
 		}
+		//============= Если не хватает мааны - подмигнуть надписью =============
 			if (playerTurn.getFocusedCard_N() <= 3 && playerTurn.getCardsOnTable_COST()[playerTurn.getFocusedCard_N()] > playerTurn.getMaana()){
 				playerTurn.doRedFlash();
+				table.getLogger().logOutOfMaana(playerTurn.getMaana(), playerTurn.getStartCardN());
 				return true;
 			}
+		//============= Если карта во втором ряду - поменяться с первым рядом =============
 		if (playerTurn.getFocusedCard_N() >= 4 && 
 				playerTurn.getFocusedCard_N() <= 6 &&
 					possibleToSwitchCards(playerTurn.getFocusedCard_N()+3));

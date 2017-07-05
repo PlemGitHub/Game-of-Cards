@@ -4,7 +4,7 @@ import java.awt.Toolkit;
 import java.util.HashMap;
 
 public interface Constants {
-	public int N_OF_CARDS = 10;
+	public int N_OF_CARDS = 60;
 	public int START_HP = 30;
 	public int START_MAANA = 0;
 	public int BIG_FONT_SIZE = 34;
@@ -30,6 +30,13 @@ public interface Constants {
 	public int FIELD_HEIGHT = CARD_HEIGHT+dXY2;		// высота обводки
 	public int HP_MAANA_WIDTH = 50;
 	public int HP_MAANA_HEIGHT = 50;
+	public int HELP_ICONS_SIZE = 55;
+	public int HELP_ICONS_X = DISPLAY_RESOLUTION_X/2-300;
+	public int HELP_ICONS_Y1 = DISPLAY_RESOLUTION_Y/2-HELP_ICONS_SIZE*9/2;
+	public int HELP_ICONS_Y2 = DISPLAY_RESOLUTION_Y/2-HELP_ICONS_SIZE*5/2;
+	public int HELP_ICONS_Y3 = DISPLAY_RESOLUTION_Y/2-HELP_ICONS_SIZE*1/2;
+	public int HELP_ICONS_Y4 = DISPLAY_RESOLUTION_Y/2+HELP_ICONS_SIZE*3/2;
+	public int HELP_ICONS_Y5 = DISPLAY_RESOLUTION_Y/2+HELP_ICONS_SIZE*7/2;
 	
 	public int FIELD_TO_DECK_WIDTH = (FIELD_WIDTH-DECK_WIDTH)/2; 	// переход от Обводки к Колоде
 	public int FIELD_TO_DECK_HEIGHT = (FIELD_HEIGHT-DECK_HEIGTH)/2; // переход от Обводки к Колоде
