@@ -12,8 +12,8 @@ public class FightThr extends Thread implements Constants, CardsValues {
 		private Table table;
 		private PlayerTurn playerTurn;
 		private int kX;
-		private int moveDelayUpDown = 25;
-		private int moveDelaySide = 25;
+		private int moveDelayUpDown = 20;
+		private int moveDelaySide = 10;
 		private int delay;
 		private FlashOnHP flashOnHP;
 		private FlashOnMaana_GREEN greenFlash;
@@ -33,11 +33,12 @@ public class FightThr extends Thread implements Constants, CardsValues {
 	}
 	
 	public void run(){
-
+		table.getLogger().logFightStarts();
 		//============= Найти всех, кто может нанести урон =============
 		for (int i = 0; i < 6; i++) {
 			myCardPower = playerTurn.getCardsOnTable_POWER()[4+i];
 			if (!myCardPower.equals("n")){
+				table.getLogger().logReadyToAttack(playerTurn.getCardsOnTable_N()[4+i], 4+i);
 				myFocusedCard = 4+i;
 				int x = playerTurn.getMy_XY().get(myFocusedCard*10+1)+10;
 				int y = playerTurn.getMy_XY().get(myFocusedCard*10+2);
@@ -69,8 +70,8 @@ public class FightThr extends Thread implements Constants, CardsValues {
 				doHealMyCard();
 			}
 		}
-		
-//		table.getNewGameButton().addActionListener(table.getEngine());
+
+		table.getLogger().logFightEnds();
 	}
 	
 	private void doMoveToPerformAttack(){

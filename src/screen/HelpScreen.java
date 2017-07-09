@@ -14,7 +14,6 @@ public class HelpScreen extends JPanel implements Constants{
 	private static final long serialVersionUID = 1L;
 	
 	private Table table;
-	private Engine engine;
 	private JPanel sword_img = new ImageImport("iconSword");
 	private JPanel axe_img = new ImageImport("iconAxe");
 	private JPanel bow_img = new ImageImport("iconBow");
@@ -84,12 +83,14 @@ public class HelpScreen extends JPanel implements Constants{
 		table.getMainFrame().setContentPane(this);
 		table.getMainFrame().revalidate();
 		table.getMainFrame().repaint();
+		table.getLogger().logShowHelpScreen();
 	}
 	
 	public void closeHelpScreen(){
 		table.getMainFrame().setContentPane(table.getMainPanel());
 		table.getMainFrame().revalidate();
 		table.getMainFrame().repaint();
+		table.getLogger().logHideHelpScreen();
 	}
 	
 	public JButton getCloseHelpButton(){

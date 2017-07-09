@@ -130,6 +130,8 @@ public class PlayerTurn implements Constants, CardsValues{
 		maana++;
 		iel.setTextOnLabel(maana_Label, Integer.toString(maana));
 		doGreenFlash();
+		table.getLogger().logMaanaIncrement(maana);
+		table.getLogger().logSetFocusOnCard(1);
 		
 		table.getMainPanel().repaint();
 		
@@ -221,6 +223,7 @@ public class PlayerTurn implements Constants, CardsValues{
 			cardsOnTable_COST[focusedCard_N]=0;
 			cardsOnTable_REFUND[focusedCard_N]=0;
 		table.getLogger().logCardToMaana(focusedCard_N, startCardN, refund, maana);
+		table.getLogger().logActionsDone(actionsDone);
 	}
 	
 	public void clearMaanaPlus_Label(){

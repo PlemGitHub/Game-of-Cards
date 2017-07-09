@@ -26,10 +26,10 @@ public class PlayerTurnThread extends Thread implements Constants{
 	@Override
 	public void run() {
 		table.getLogger().logNewGameStarted();
-		table.getLogger().logSetFocusOnCard(1);
 		do{
 			//============= ÕÎÄ ÏÅĞÂÎÃÎ ÈÃĞÎÊÀ =============
 			table.getMainFrame().addKeyListener(table);
+			table.getLogger().logPlayerTurn("Player 1's");
 				playerTurn.Turn("left");
 			checkThreads();
 			
@@ -40,6 +40,8 @@ public class PlayerTurnThread extends Thread implements Constants{
 
 			//============= ÕÎÄ ÂÒÎĞÎÃÎ ÈÃĞÎÊÀ =============
 			table.getMainFrame().addKeyListener(table);
+			table.getLogger().logPlayerTurn("Player 2's");
+			table.getLogger().logSetFocusOnCard(1);
 			playerTurn.Turn("right");
 			checkThreads();
 			playerTurn.setMaana_right(playerTurn.getMaana());

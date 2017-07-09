@@ -6,7 +6,7 @@ import java.util.HashMap;
 public interface Constants {
 	public int N_OF_CARDS = 60;
 	public int START_HP = 30;
-	public int START_MAANA = 0;
+	public int START_MAANA = 30;
 	public int BIG_FONT_SIZE = 34;
 	public int NORMAL_FONT_SIZE = 30;
 	public int CARDS_MOVEMENT_TIME_MS = 100;

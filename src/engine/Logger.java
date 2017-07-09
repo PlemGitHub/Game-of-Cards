@@ -35,6 +35,15 @@ public class Logger {
 		}
 	}
 	
+	public void logPlayerTurn(String str){
+		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+		try {
+			out.append(timeStamp+" ========== It's "+str+" turn ==========\r\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void logNewGameStarted(){
 		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
 		try {
@@ -47,7 +56,7 @@ public class Logger {
 	public void logSetFocusOnCard(int focusedCard){
 		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
 		try {
-			out.append(timeStamp+" Focused card is # "+focusedCard+"\r\n");
+			out.append(timeStamp+" Focused card is #"+focusedCard+"\r\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -71,11 +80,29 @@ public class Logger {
 		}
 	}
 	
+	public void logActionsDone(int actionsDone){
+		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+		try {
+			out.append(timeStamp+" ----------Actions done = "+actionsDone+" ----------\r\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void logCardToMaana(int fc, int nCard, int plusMaana, int maana){
 		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
 		try {
 			out.append(timeStamp+" Card #"+nCard+" goes to Maana from position #"+fc+"\r\n");
 			out.append(timeStamp+" Card #"+nCard+" refunds "+plusMaana+" Maana. It is "+maana+" Maana now.\r\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void logMaanaIncrement(int maana){
+		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+		try {
+			out.append(timeStamp+" Maana increments by 1. It is "+maana+" Maana now.\r\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -90,11 +117,108 @@ public class Logger {
 		}
 	}
 	
+	/**
+	 * Логирует движение карты с позиции на позицию
+	 * @param nCard Порядковый номер карты
+	 * @param oldP Старая позиция
+	 * @param newP Новая позиция
+	 */
 	public void logMoveCard(int nCard, int oldP, int newP){
 		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
 		try {
 			out.append(timeStamp+" Card #"+nCard+" moves from position #"+oldP+
-					" to position #"+newP+" \r\n");
+					" to position #"+newP+"\r\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Логирует движение карты вверх/вниз со смещением карты на пути на вторую линию
+	 * @param nMyCard
+	 * @param nSecondCard
+	 * @param myOldPos
+	 * @param myNewPos
+	 */
+	public void logMoveCardFromCenter(int nMyCard, int nSecondCard, int myOldPos, int myNewPos){
+		int scNewPos = myNewPos-3;
+		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+		try {
+			out.append(timeStamp+" Card #"+nMyCard+" moves card #"+nSecondCard+
+					" to second line from position #"+myNewPos+" to position #"+scNewPos+"\r\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Логирует движение карты вправо/влево со сменой местами двух карт
+	 * @param nMyCard
+	 * @param nSecondCard
+	 * @param myOldPos
+	 * @param myNewPos
+	 */
+	public void logMoveWithSwitchCard(int nMyCard, int nSecondCard, int myOldPos, int myNewPos){
+		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+		try {
+			out.append(timeStamp+" Card #"+nMyCard+" switches with card #"+nSecondCard+
+					" from position #"+myOldPos+" to position #"+myNewPos+"\r\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void logMoveCardToCenter(int nMyCard, int myOldPos, int myNewPos){
+		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+		try {
+			out.append(timeStamp+" Card #"+nMyCard+" automoves to center from "
+					+ "position #"+myOldPos+" to position #"+myNewPos+"\r\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void logFightStarts(){
+		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+		try {
+			out.append(timeStamp+" Fight begins!\r\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void logReadyToAttack(int nCard, int pos){
+		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+		try {
+			out.append(timeStamp+" Card #"+nCard+" is ready to attack"
+					+ " from position #"+pos+"\r\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void logFightEnds(){
+		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+		try {
+			out.append(timeStamp+" Fight ends!\r\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void logShowHelpScreen(){
+		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+		try {
+			out.append(timeStamp+" Help screen opens\r\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void logHideHelpScreen(){
+		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+		try {
+			out.append(timeStamp+" Help screen hides\r\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -103,7 +227,7 @@ public class Logger {
 	public void closeFile(){
 		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
 		try {
-			out.append(timeStamp+" Game of Cards closed!\r\n");
+			out.append(timeStamp+" Game of Cards closes!\r\n");
 			out.append("========================================================================================\r\n");
 			out.close();
 		} catch (IOException e) {

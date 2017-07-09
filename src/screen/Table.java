@@ -31,6 +31,8 @@ public class Table implements Constants, KeyListener, WindowListener {
 		private JButton helpButton = new JButton("онлныэ");
 	
 	Table(){
+		logger = new Logger(this);
+		logger.logGameOfCardsStarted();
 		engine = new Engine(this);
 		iel = new InterfaceElements(this, engine);
 		msc = new MoveSelectedCards(this, engine, iel);
@@ -48,8 +50,6 @@ public class Table implements Constants, KeyListener, WindowListener {
 		mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		mainFrame.addWindowListener(this);
 			newGameButton.doClick();
-		logger = new Logger(this);
-		logger.logGameOfCardsStarted();
 
 	}
 	
