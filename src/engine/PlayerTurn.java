@@ -47,7 +47,7 @@ public class PlayerTurn implements Constants, CardsValues{
 	private JLabel hpMy_Label;
 	private JLabel hpEnemy_Label;
 	private int hp_left = START_HP;
-	private int hp_right = START_HP+10;
+	private int hp_right = START_HP;
 	private int maana;
 	private int maana_left = START_MAANA;
 	private int maana_right = START_MAANA;
@@ -156,6 +156,7 @@ public class PlayerTurn implements Constants, CardsValues{
 				iel.setTextOnLabel(maanaPlus_Label, "+"+Integer.toString(cardsOnTable_REFUND[focusedCard_N]));
 		}
 			public void setFocusAfterAction(){
+				table.getLogger().logActionsDone(actionsDone+1);
 				for (int i = 1; i <= 3; i++)
 					if (!cardsOnTable_POWER[i].equals("n")){
 						setFocusedCard_N(i);
@@ -163,6 +164,7 @@ public class PlayerTurn implements Constants, CardsValues{
 						table.getLogger().logSetFocusOnCard(i);
 						break;
 					}
+				actionsDone++;
 			}
 	/*
 	 * ”станавливают или снимают выбор карты дл€ дальнейшего действи€
@@ -214,7 +216,6 @@ public class PlayerTurn implements Constants, CardsValues{
 		maana += refund;
 		iel.setTextOnLabel(maana_Label, Integer.toString(maana));
 		doGreenFlash();
-		actionsDone++;
 			
 			//ƒЋя Ќј√ЋяƒЌќ—“» ќ“Ћјƒ »
 			cardsOnTable_ATTACK[focusedCard_N]=0;
@@ -223,7 +224,6 @@ public class PlayerTurn implements Constants, CardsValues{
 			cardsOnTable_COST[focusedCard_N]=0;
 			cardsOnTable_REFUND[focusedCard_N]=0;
 		table.getLogger().logCardToMaana(focusedCard_N, startCardN, refund, maana);
-		table.getLogger().logActionsDone(actionsDone);
 	}
 	
 	public void clearMaanaPlus_Label(){
@@ -231,9 +231,11 @@ public class PlayerTurn implements Constants, CardsValues{
 	}
 	
 	public void decreaseMaanaForCard(){
+		String player = side.equals("left")? "Player 1" : "Player 2";
 		maana -= startCardCOST;
 		iel.setTextOnLabel(maana_Label, Integer.toString(maana));
 		doRedFlash();
+		table.getLogger().logDecreaseMaanaForCard(player, cardsOnTable_N[focusedCard_N], focusedCard_N, startCardCOST, maana);
 	}
 	
 	public void setCardsOnTable_POWER(int i, String str){

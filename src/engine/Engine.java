@@ -95,7 +95,7 @@ public class Engine implements Constants, ActionListener {
 
 		//============= Отрисовка начальных значений хп и мааны =============
 		table.getInterfaceElements().getHp_left_Label().setText(Integer.toString(START_HP));
-		table.getInterfaceElements().getHp_right_Label().setText(Integer.toString(START_HP+10));
+		table.getInterfaceElements().getHp_right_Label().setText(Integer.toString(START_HP));
 		table.getInterfaceElements().getMaana_right_Label().setText(Integer.toString(START_MAANA));
 		table.getInterfaceElements().getMaanaPlus_right_Label().setText("");
 		

@@ -6,14 +6,12 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import screen.Table;
-
-public class Logger {
+public class Logger implements Constants, CardsValues{
 	private File file;
 	
     private FileWriter out;	//PrintWriter обеспечит возможности записи в файл
 	
-	public Logger(Table table) {
+	public Logger() {
 		String tmp = System.getProperty("java.io.tmpdir");
 		file = new File(tmp+"/goc_log.txt");
 
@@ -29,7 +27,7 @@ public class Logger {
 	public void logGameOfCardsStarted(){
 		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
 		try {
-			out.append(timeStamp+" Game of Cards starts!\r\n");
+			out.append(timeStamp+" GAME OF CARDS STARTS!");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -38,7 +36,7 @@ public class Logger {
 	public void logPlayerTurn(String str){
 		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
 		try {
-			out.append(timeStamp+" ========== It's "+str+" turn ==========\r\n");
+			out.append(timeStamp+" =============== It's "+str+" turn ===============\r\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -47,7 +45,7 @@ public class Logger {
 	public void logNewGameStarted(){
 		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
 		try {
-			out.append(timeStamp+" New game starts!\r\n");
+			out.append("\r\n"+timeStamp+" NEW GAME STARTS!\r\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -75,6 +73,16 @@ public class Logger {
 		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
 		try {
 			out.append(timeStamp+" Unselect card #"+nCard+"\r\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void logDecreaseMaanaForCard(String player, int nCard, int pos, int cardCost, int maana){
+		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+		try {
+			out.append(timeStamp+" "+player+" sets up card #"+nCard+" on position #"+pos+" paying "+cardCost+" Maana\r\n");
+			out.append(timeStamp+" "+player+" has "+maana+" Maana left\r\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -187,11 +195,93 @@ public class Logger {
 		}
 	}
 	
-	public void logReadyToAttack(int nCard, int pos){
+	public void logCardCanDoDamage(String attacker, int nCard, int pos, String power){
 		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
 		try {
-			out.append(timeStamp+" Card #"+nCard+" is ready to attack"
-					+ " from position #"+pos+"\r\n");
+			out.append(timeStamp+" "+attacker+": card #"+nCard+" can do damage"
+					+ " from position #"+pos+" with "+power.toUpperCase()+" power\r\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void logDoDamageToHp(int nCard, int damage, String attacker, String defender, int defHP){
+		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+		try {
+			out.append(timeStamp+" No more card counters "+attacker+"'s attack!\r\n"); // ПЕРЕДЕЛАТЬ ФРАЗУ
+			out.append(timeStamp+" "+attacker+": card #"+nCard+" does "+damage+" damage to "+defender+"\r\n");
+			out.append(timeStamp+" "+defender+" has "+defHP+"/"+START_HP+" hp now\r\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void logDoDamageToCard(int nCard, int nEnemyCard, int damage, int defHP, String attacker, String defender){
+		int baseEnemyCardHp = HEALTH.get(nEnemyCard);
+		if (defHP < 0)
+				defHP = 0;
+		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+		try {
+			out.append(timeStamp+" "+attacker+": card #"+nCard+" does "+damage+" damage to "+defender+"'s card"
+					+ " #"+nEnemyCard+"\r\n");
+			out.append(timeStamp+" "+defender+"'s card #"+nEnemyCard+" has "+defHP+"/"+baseEnemyCardHp+" hp now\r\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void logCardIsDead(String player, int nCard, int pos){
+		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+		try {
+			out.append(timeStamp+" "+player+": card #"+nCard+" has 0 hp and already DEAD at position #"+pos+"\r\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void logCardAutomoveToFirstLine(String player, int nCard, int pos){
+		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+		try {
+			out.append(timeStamp+" "+player+": card #"+nCard+" automoves from second line to position #"+pos+"\r\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void logAxeDamageRemaining(int nCard, int damage,String attacker){
+		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+		try {
+			out.append(timeStamp+" "+attacker+": card #"+nCard+" has "+damage+" more damage\r\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void logCardGivesMaana(String player, int nCard, int maana){
+		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+		try {
+			out.append(timeStamp+" "+player+": card #"+nCard+" increases Maana by 1. "+player+" has "+maana+" Maana now\r\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void logCardHealsAnotherCard(String player, int nCard, int nToBeHealed, int healerPos, int injuredPos, int newHP){
+		int baseEnemyCardHp = HEALTH.get(nToBeHealed);
+		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+		try {
+			out.append(timeStamp+" "+player+": card #"+nCard+" at position #"+healerPos+" heals 1 hp to card #"
+							+nToBeHealed+" at position #"+injuredPos+"\r\n");
+			out.append(timeStamp+" "+player+": card #"+nToBeHealed+" has "+newHP+"/"+baseEnemyCardHp+" hp now\r\n");		
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void logNoHealNeeded(String player, int nCard, int healerPos){
+		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+		try {
+			out.append(timeStamp+" "+player+": card #"+nCard+" at position #"+healerPos+" tries to heal someone. No injuries detected!\r\n");	
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -224,10 +314,19 @@ public class Logger {
 		}
 	}
 	
+	public void logSomeoneWinsTheGame(String strToLog){
+		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+		try {
+			out.append(timeStamp+" "+strToLog+"\r\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void closeFile(){
 		String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
 		try {
-			out.append(timeStamp+" Game of Cards closes!\r\n");
+			out.append(timeStamp+" GAME OF CARDS CLOSES!\r\n");
 			out.append("========================================================================================\r\n");
 			out.close();
 		} catch (IOException e) {

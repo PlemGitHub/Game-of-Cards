@@ -134,8 +134,6 @@ public class MoveSelectedCards implements Constants, CardsValues {
 			playerTurn.setUnselectOnCard();				
 			playerTurn.setUnfocusOnCard();
 			playerTurn.decreaseMaanaForCard();
-			playerTurn.setActionsDone(playerTurn.getActionsDone()+1);
-			table.getLogger().logActionsDone(playerTurn.getActionsDone());
 			playerTurn.setFocusAfterAction();
 		}
 	}

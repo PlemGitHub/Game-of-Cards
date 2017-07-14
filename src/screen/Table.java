@@ -31,7 +31,7 @@ public class Table implements Constants, KeyListener, WindowListener {
 		private JButton helpButton = new JButton("онлныэ");
 	
 	Table(){
-		logger = new Logger(this);
+		logger = new Logger();
 		logger.logGameOfCardsStarted();
 		engine = new Engine(this);
 		iel = new InterfaceElements(this, engine);

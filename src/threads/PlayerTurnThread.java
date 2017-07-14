@@ -31,7 +31,7 @@ public class PlayerTurnThread extends Thread implements Constants{
 			table.getMainFrame().addKeyListener(table);
 			table.getLogger().logPlayerTurn("Player 1's");
 				playerTurn.Turn("left");
-			checkThreads();
+				checkThreads();
 			
 			playerTurn.setMaana_left(playerTurn.getMaana());
 			playerTurn.setHpLeft(playerTurn.getHpMy());
@@ -41,35 +41,36 @@ public class PlayerTurnThread extends Thread implements Constants{
 			//============= ХОД ВТОРОГО ИГРОКА =============
 			table.getMainFrame().addKeyListener(table);
 			table.getLogger().logPlayerTurn("Player 2's");
-			table.getLogger().logSetFocusOnCard(1);
-			playerTurn.Turn("right");
-			checkThreads();
+				playerTurn.Turn("right");
+				checkThreads();
+				
 			playerTurn.setMaana_right(playerTurn.getMaana());
 			playerTurn.setHpRight(playerTurn.getHpMy());
 			playerTurn.setHpLeft(playerTurn.getHpEnemy());
-			checkPlayersHpToFindWinner();
+			if (checkPlayersHpToFindWinner()) break;
 		
 		} while (noWinner);
 	}
 	
 	private boolean checkPlayersHpToFindWinner() {
 		if (playerTurn.getHpLeft()>0 && playerTurn.getHpRight()<=0)
-			return showWinner("Победил первый игрок! Начать новую игру?");
+			return showWinner("Player 1 wins the game!", "Победил первый игрок! Начать новую игру?");
 		if (playerTurn.getHpLeft()<=0 && playerTurn.getHpRight()>0)
-			return showWinner("Победил второй игрок! Начать новую игру?");
+			return showWinner("Player 2 wins the game!", "Победил второй игрок! Начать новую игру?");
 		if (playerTurn.getHpLeft()<=0 && playerTurn.getHpRight()<=0)
-			return showWinner("Ничья! Начать новую игру?");
+			return showWinner("It's a tie!", "Ничья! Начать новую игру?");
 		return false;
 	}
 
-	private boolean showWinner(String str) {
+	private boolean showWinner(String strToLog, String str) {
+		table.getLogger().logSomeoneWinsTheGame(strToLog);
 		int result = JOptionPane.showConfirmDialog(table.getMainFrame(), str, "Конец игры!", JOptionPane.YES_NO_OPTION);
 		switch (result) {
-		case JOptionPane.YES_OPTION:
-			engine.newGame(); 
-			break;
-		case JOptionPane.NO_OPTION:
-			table.windowClosing(null);
+			case JOptionPane.YES_OPTION:
+				engine.newGame(); 
+				break;
+			case JOptionPane.NO_OPTION:
+				table.windowClosing(null);
 		}
 		return true;
 	}
